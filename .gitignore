@@ -1,0 +1,46 @@
+# Files without extension in project folder
+*
+!*/
+!*.*
+!Makefile
+!LICENSE
+
+# IDE
+.vscode/
+.vscode/*
+.cache
+*.code-workspace
+
+# Build folders
+bin/
+build/
+logs/*
+
+# Binary
+*.so
+*.so.*
+*.dll
+*.pdb
+*.exe
+*.o
+*.out
+*.d
+*.obj
+*.res
+*.lib
+*.a
+*.la
+*.tmp
+*.rej
+
+# Binary header
+*.pch
+*.gch
+
+# Binary modules
+*.pcm
+*.gcm
+
+# Log files
+*.ini
+*.log
