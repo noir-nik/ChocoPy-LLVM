@@ -7,28 +7,11 @@ project(app LANGUAGES C CXX)
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_MODULE_STD 1)
 
-# Main executable
-file(GLOB_RECURSE SOURCES RELATIVE ${CMAKE_SOURCE_DIR} "Source/*.cpp")
-
-set(ALL_SOURCES
-	${SOURCES}
-)
-add_executable(${PROJECT_NAME} ${ALL_SOURCES})
-
 # Include directories
 set(INCLUDE_DIRS
 
 )
-target_include_directories(${PROJECT_NAME} PRIVATE ${INCLUDE_DIRS})
-
-# C++ modules
-file(GLOB_RECURSE MODULE_SOURCES RELATIVE ${CMAKE_SOURCE_DIR} "Source/*.cppm")
-
-target_sources(${PROJECT_NAME} PUBLIC
-	FILE_SET CXX_MODULES
-	BASE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}
-	FILES ${MODULE_SOURCES}
-)
+include_directories(${INCLUDE_DIRS})
 
 # LLVM
 find_package(LLVM QUIET)
@@ -45,8 +28,8 @@ list(APPEND CMAKE_MODULE_PATH "${LLVM_CMAKE_DIR}")
 include(AddLLVM)
 
 add_definitions(${LLVM_DEFINITIONS})
-target_include_directories(${PROJECT_NAME} PRIVATE ${LLVM_INCLUDE_DIRS})
-target_link_directories(${PROJECT_NAME} PRIVATE ${LLVM_LIBRARY_DIRS})
+include_directories(${LLVM_INCLUDE_DIRS})
+link_directories(${LLVM_LIBRARY_DIRS})
 
 if(LLVM_LINK_LLVM_DYLIB)
 	message(STATUS "Linking to LLVM dynamic shared library object")
@@ -60,7 +43,7 @@ else()
 endif()
 
 # message(STATUS "llvm_libs: "${llvm_libs})
-target_link_libraries(${PROJECT_NAME} PRIVATE ${llvm_libs})
+link_libraries(${llvm_libs})
 	
 else() # LLVM_FOUND
 message(STATUS "LLVM package was not found")
@@ -90,10 +73,12 @@ else() # LLVM_DLL
 message(STATUS "LLVM_DLL: ${LLVM_DLL}")
 endif() # LLVM_DLL
 
-target_link_directories(${PROJECT_NAME} PRIVATE ${LLVM_LIBRARY_DIR})
-target_include_directories(${PROJECT_NAME} PRIVATE ${LLVM_INCLUDE_DIR})
-target_link_libraries(${PROJECT_NAME} PRIVATE ${LLVM_DLL})
+link_directories(${LLVM_LIBRARY_DIR})
+include_directories(${LLVM_INCLUDE_DIR})
+link_libraries(${LLVM_DLL})
 
 endif() # LLVM_FOUND
+
+add_subdirectory(Source)
 
 # cmake . -B build -G Ninja -DCMAKE_BUILD_TYPE=Debug -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_CXX_FLAGS="-stdlib=libc++ -fno-rtti -fno-exceptions" -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
