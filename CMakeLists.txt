@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.30)
 
 set(CMAKE_EXPERIMENTAL_CXX_IMPORT_STD "0e5b6991-d74f-4b3d-a41c-cf096e0b2508")
 
-project(app LANGUAGES C CXX)
+project(chocopy-llvm LANGUAGES C CXX)
 
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_MODULE_STD 1)
@@ -82,6 +82,13 @@ endif() # LLVM_FOUND
 
 add_definitions(-Wno-deprecated-declarations)
 
+set(CHOCOPY_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR})
+set(CHOCOPY_BINARY_DIR ${CMAKE_CURRENT_BINARY_DIR})
+
 add_subdirectory(Source)
+
+if (LLVM_FOUND)
+add_subdirectory(Test)
+endif()
 
 # cmake . -B build -G Ninja -DCMAKE_BUILD_TYPE=Debug -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_CXX_FLAGS="-stdlib=libc++ -fno-rtti -fno-exceptions" -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
