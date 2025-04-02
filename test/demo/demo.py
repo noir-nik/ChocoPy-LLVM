@@ -9,4 +9,3 @@ print(a)
 
 a = a + 2 + a * a * 100 - 50
 print(a)
-``
