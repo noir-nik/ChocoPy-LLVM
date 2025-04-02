@@ -1,6 +1,7 @@
 module;
-#include "llvm/ADT/GraphTraits.h"
-#include "llvm/ADT/SmallPtrSet.h"
+#include <llvm/ADT/APInt.h>
+#include <llvm/ADT/GraphTraits.h>
+#include <llvm/ADT/SmallPtrSet.h>
 #include <llvm/ADT/DenseMap.h>
 #include <llvm/ADT/DenseSet.h>
 #include <llvm/ADT/Hashing.h>
@@ -20,6 +21,7 @@ module;
 #include <llvm/Support/SaveAndRestore.h>
 #include <llvm/Support/SourceMgr.h>
 #include <llvm/Support/VersionTuple.h>
+
 
 export module LLVM;
 
@@ -57,6 +59,10 @@ using llvm::StringMapEntry;
 using llvm::StringRef;
 using llvm::StringSwitch;
 using llvm::Twine;
+using llvm::TypeSwitch;
+
+using llvm::APInt;
+using llvm::isa;
 using llvm::TypeSwitch;
 
 using llvm::operator==;

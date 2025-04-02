@@ -1,12 +1,10 @@
-#ifndef CHOCOPY_LLVM_PARSER_PARSER_H
-#define CHOCOPY_LLVM_PARSER_PARSER_H
+export module Parser;
+import AST;
+import Basic;
+import Lexer;
+import Sema;
 
-#include "chocopy-llvm/AST/AST.h"
-#include "chocopy-llvm/Lexer/Lexer.h"
-
-namespace chocopy {
-class Sema;
-class Scope;
+export namespace chocopy {
 
 class Parser {
   class ParseScope;
@@ -49,4 +47,3 @@ private:
   Token Tok;
 };
 } // namespace chocopy
-#endif // CHOCOPY_LLVM_PARSER_PARSER_H

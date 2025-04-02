@@ -13,6 +13,7 @@ import Basic;
 import AST;
 import Lexer;
 import Sema;
+import Parser;
 import LLVM;
 
 using namespace chocopy;
@@ -42,7 +43,6 @@ int main(int argc, char* argv[]) {
 	TheLexer.reset();
 	Token TheToken;
 	while (bool boolValue = TheLexer.lex(TheToken)) {
-		std::printf(" %d ", boolValue);
 		TheToken.print();
 		std::printf("\n");
 		if (TheToken.getKind() == tok::eof)
@@ -51,20 +51,18 @@ int main(int argc, char* argv[]) {
 
 	ASTContext ASTCtx(SrcMgr);
 	Sema       Actions(DiagsEngine, ASTCtx);
-	// Parser     TheParser(ASTCtx, TheLexer, Actions);
+	Parser     TheParser(ASTCtx, TheLexer, Actions);
 
-	// ASTCtx.initialize(TheLexer);
-	// Actions.initialize();
+	ASTCtx.initialize(TheLexer.getSymbolTable());
+	Actions.initialize();
 
-	// if (Program* P = TheParser.parse()) {
-	// 	P->dump(ASTCtx);
-	// 	llvm::LLVMContext LLVMCtx;
+	if (Program* P = TheParser.parse()) {
+		P->dump(ASTCtx);
+		// llvm::LLVMContext LLVMCtx;
 
-	// 	std::unique_ptr<CodeGenerator> CodeGen = createLLVMCodegen(LLVMCtx, ASTCtx);
-	// 	std::unique_ptr<llvm::Module>  M       = CodeGen->handleProgram(P, file_path);
-	// }
-
-	// chocopy::Lexer Lexer(DiagnosticsEngine(), SourceMgr);
-
+		// std::unique_ptr<CodeGenerator> CodeGen = createLLVMCodegen(LLVMCtx, ASTCtx);
+		// std::unique_ptr<llvm::Module>  M       = CodeGen->handleProgram(P, file_path);
+	}
+	
 	return 0;
 }

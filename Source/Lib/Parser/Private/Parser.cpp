@@ -1,12 +1,11 @@
-#include "chocopy-llvm/Parser/Parser.h"
-#include "chocopy-llvm/AST/ASTContext.h"
-#include "chocopy-llvm/Basic/Diagnostic.h"
-#include "chocopy-llvm/Sema/Scope.h"
-#include "chocopy-llvm/Sema/Sema.h"
+module;
 
-#include <llvm/ADT/APInt.h>
+#include <cassert>
 
-#include <stack>
+module Parser;
+import Basic;
+import AST;
+import std;
 
 namespace chocopy {
 Parser::Parser(ASTContext &C, Lexer &Lex, Sema &Acts)

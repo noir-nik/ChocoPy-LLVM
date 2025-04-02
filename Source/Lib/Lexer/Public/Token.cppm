@@ -14,143 +14,160 @@ export namespace chocopy {
 using llvm::SMRange;
 
 class Token {
-	tok::TokenKind Kind = tok::TokenKind::unknown;
-	SMRange        Loc;
-	void*          Ptr    = nullptr;
-	unsigned       Length = 0;
+  tok::TokenKind Kind = tok::TokenKind::unknown;
+  SMRange Loc;
+  void *Ptr = nullptr;
+  unsigned Length = 0;
 
 public:
-	void startToken() {
-		Kind   = tok::unknown;
-		Loc    = SMRange();
-		Ptr    = nullptr;
-		Length = 0;
-	}
+  void startToken() {
+    Kind = tok::unknown;
+    Loc = SMRange();
+    Ptr = nullptr;
+    Length = 0;
+  }
 
-	void setLocation(SMRange Location) { Loc = Location; }
+  void setLocation(SMRange Location) { Loc = Location; }
 
-	SMRange getLocation() const { return Loc; }
+  SMRange getLocation() const { return Loc; }
 
-	void setSymbolInfo(SymbolInfo* SI) { Ptr = SI; }
+  void setSymbolInfo(SymbolInfo *SI) { Ptr = SI; }
 
-	SymbolInfo* getSymbolInfo() const {
-		if (is(tok::identifier) || tok::isKeyword(Kind))
-			return static_cast<SymbolInfo*>(Ptr);
-		return nullptr;
-	}
+  SymbolInfo *getSymbolInfo() const {
+    if (is(tok::identifier) || tok::isKeyword(Kind))
+      return static_cast<SymbolInfo *>(Ptr);
+    return nullptr;
+  }
 
-	tok::TokenKind getKind() const { return Kind; }
+  tok::TokenKind getKind() const { return Kind; }
 
-	void setKind(tok::TokenKind K) { Kind = K; }
+  void setKind(tok::TokenKind K) { Kind = K; }
 
-	bool is(tok::TokenKind K) const { return Kind == K; }
+  bool is(tok::TokenKind K) const { return Kind == K; }
 
-	bool isNot(tok::TokenKind K) const { return Kind != K; }
+  bool isNot(tok::TokenKind K) const { return Kind != K; }
 
-	bool isLiteral() const { return tok::isLiteral(Kind); }
+  bool isLiteral() const { return tok::isLiteral(Kind); }
 
-	bool isBinOp() const { return tok::isBinOp(Kind); }
+  bool isBinOp() const { return tok::isBinOp(Kind); }
 
-	bool isOneOf(tok::TokenKind K1, tok::TokenKind K2) const {
-		return is(K1) || is(K2);
-	}
+  bool isOneOf(tok::TokenKind K1, tok::TokenKind K2) const {
+    return is(K1) || is(K2);
+  }
 
-	template <typename... Ts>
-	bool isOneOf(tok::TokenKind K1, Ts... Ks) const {
-		return is(K1) || isOneOf(Ks...);
-	}
+  template <typename... Ts> bool isOneOf(tok::TokenKind K1, Ts... Ks) const {
+    return is(K1) || isOneOf(Ks...);
+  }
 
-	unsigned getLength() const { return Length; }
+  unsigned getLength() const { return Length; }
 
-	void setLength(unsigned Len) { Length = Len; }
+  void setLength(unsigned Len) { Length = Len; }
 
-	const char* getName() const { return tok::getTokenName(Kind); }
+  const char *getName() const { return tok::getTokenName(Kind); }
 
-	StringRef getLiteralData() const {
-		assert(isLiteral() && "Cannot get literal data of non-literal");
-		return StringRef(static_cast<char*>(Ptr), Length);
-	}
+  StringRef getLiteralData() const {
+    assert(isLiteral() && "Cannot get literal data of non-literal");
+    return StringRef(static_cast<char *>(Ptr), Length);
+  }
 
-	void setLiteralData(const char* DataPtr) {
-		assert(isLiteral() && "Cannot set literal data of non-literal");
-		Ptr = const_cast<char*>(DataPtr);
-	}
+  void setLiteralData(const char *DataPtr) {
+    assert(isLiteral() && "Cannot set literal data of non-literal");
+    Ptr = const_cast<char *>(DataPtr);
+  }
 
-	StringRef getUnknownData() const {
-		assert(is(tok::unknown) && "Cannot get unknown data of non-unknow");
-		return StringRef(static_cast<char*>(Ptr), Length);
-	}
+  StringRef getUnknownData() const {
+    assert(is(tok::unknown) && "Cannot get unknown data of non-unknow");
+    return StringRef(static_cast<char *>(Ptr), Length);
+  }
 
-	void setUnknownData(const char* DataPtr) {
-		assert(is(tok::unknown) && "Cannot set unknown data of non-unknown");
-		Ptr = const_cast<char*>(DataPtr);
-	}
+  void setUnknownData(const char *DataPtr) {
+    assert(is(tok::unknown) && "Cannot set unknown data of non-unknown");
+    Ptr = const_cast<char *>(DataPtr);
+  }
 
-	void setEofData(const char* DataPtr) {
-		assert(is(tok::eof));
-		Ptr = const_cast<char*>(DataPtr);
-	}
+  void setEofData(const char *DataPtr) {
+    assert(is(tok::eof));
+    Ptr = const_cast<char *>(DataPtr);
+  }
 
-	const char* getEofData() {
-		assert(is(tok::eof));
-		return static_cast<char*>(Ptr);
-	}
+  const char *getEofData() {
+    assert(is(tok::eof));
+    return static_cast<char *>(Ptr);
+  }
 
-	void setIndentData(const char* DataPtr) {
-		assert(is(tok::INDENT));
-		Ptr = const_cast<char*>(DataPtr);
-	}
+  void setIndentData(const char *DataPtr) {
+    assert(is(tok::INDENT));
+    Ptr = const_cast<char *>(DataPtr);
+  }
 
-	const char* getIndentData() {
-		assert(is(tok::INDENT));
-		return static_cast<char*>(Ptr);
-	}
+  const char *getIndentData() {
+    assert(is(tok::INDENT));
+    return static_cast<char *>(Ptr);
+  }
 
-	void setDedentData(const char* DataPtr) {
-		assert(is(tok::DEDENT));
-		Ptr = const_cast<char*>(DataPtr);
-	}
+  void setDedentData(const char *DataPtr) {
+    assert(is(tok::DEDENT));
+    Ptr = const_cast<char *>(DataPtr);
+  }
 
-	const char* getDedentData() {
-		assert(is(tok::DEDENT));
-		return static_cast<char*>(Ptr);
-	}
+  const char *getDedentData() {
+    assert(is(tok::DEDENT));
+    return static_cast<char *>(Ptr);
+  }
 
-	void setNewLineData(const char* DataPtr) {
-		assert(is(tok::NEWLINE));
-		Ptr = const_cast<char*>(DataPtr);
-	}
+  void setNewLineData(const char *DataPtr) {
+    assert(is(tok::NEWLINE));
+    Ptr = const_cast<char *>(DataPtr);
+  }
 
-	const char* getNewLineData() {
-		assert(is(tok::NEWLINE));
-		return static_cast<char*>(Ptr);
-	}
+  const char *getNewLineData() {
+    assert(is(tok::NEWLINE));
+    return static_cast<char *>(Ptr);
+  }
 
-	operator std::string() const {
-		std::string Str;
-		llvm::raw_string_ostream(Str) << *this;
-		return Str;
-	}
+  operator std::string() const {
+    std::string Str;
+    llvm::raw_string_ostream(Str) << *this;
+    return Str;
+  }
 
-	friend InFlightDiagnostic const& operator<<(InFlightDiagnostic&& D,
-												const Token&         Tok) {
-		D << std::string(Tok);
-		return D;
-	}
+  friend InFlightDiagnostic const &operator<<(InFlightDiagnostic &&D,
+                                              const Token &Tok) {
+    D << std::string(Tok);
+    return D;
+  }
 
-	void print() {
-		if (this->is(tok::unknown))
-			std::printf("[%s] %.*s", this->getName(), this->getLength(), this->getUnknownData().data());
-		else if (this->isOneOf(tok::INDENT, tok::DEDENT, tok::NEWLINE, tok::eof))
-			std::printf("[%s]", this->getName());
-		else if (tok::isPunctuator(this->getKind()))
-			std::printf("[%s] %.*s", this->getName(), this->getLength(),
-						tok::getPunctuatorSpelling(this->getKind()));
-		else if (this->isLiteral())
-			std::printf("[%s] %.*s", this->getName(), this->getLength(), this->getLiteralData().data());
-		else
-			std::printf("[%s] %.*s", this->getName(), this->getLength(),
-						this->getSymbolInfo()->getName().data());
-	}
+  friend raw_ostream &operator<<(raw_ostream &Stream, const Token &Tok) {
+    if (Tok.is(tok::unknown))
+      Stream << llvm::formatv("[{}]: {}", Tok.getName(), Tok.getUnknownData());
+    else if (Tok.isOneOf(tok::INDENT, tok::DEDENT, tok::NEWLINE, tok::eof))
+      Stream << llvm::formatv("[{}]", Tok.getName());
+    else if (tok::isPunctuator(Tok.getKind()))
+      Stream << llvm::formatv("[{}]: {}", Tok.getName(),
+                              tok::getPunctuatorSpelling(Tok.getKind()));
+    else if (Tok.isLiteral())
+      Stream << llvm::formatv("[{}]: {}", Tok.getName(), Tok.getLiteralData());
+    else
+      Stream << llvm::formatv("[{}]: {}", Tok.getName(),
+                              Tok.getSymbolInfo()->getName());
+    return Stream;
+  }
+
+  void print() {
+    if (this->is(tok::unknown))
+      std::printf("[%s] %.*s", this->getName(), this->getLength(),
+                  this->getUnknownData().data());
+    else if (this->isOneOf(tok::INDENT, tok::DEDENT, tok::NEWLINE, tok::eof))
+      std::printf("[%s]", this->getName());
+    else if (tok::isPunctuator(this->getKind()))
+      std::printf("[%s] %.*s", this->getName(), this->getLength(),
+                  tok::getPunctuatorSpelling(this->getKind()));
+    else if (this->isLiteral())
+      std::printf("[%s] %.*s", this->getName(), this->getLength(),
+                  this->getLiteralData().data());
+    else
+      std::printf("[%s] %.*s", this->getName(), this->getLength(),
+                  this->getSymbolInfo()->getName().data());
+  }
 };
 } // namespace chocopy
