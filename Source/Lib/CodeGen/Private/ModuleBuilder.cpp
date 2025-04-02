@@ -7,8 +7,8 @@ import :ModuleBuilder;
 namespace chocopy {
 std::unique_ptr<llvm::Module>
 CodeGenerator::handleProgram(Program *Program, std::string FileName) {
-  M.reset(new llvm::Module(FileName, Ctx));
-  Builder.reset(new codegen::CodeGenModule(ASTCtx, *M));
+  Module.reset(new llvm::Module(FileName, Ctx));
+  Builder.reset(new codegen::CodeGenModule(ASTCtx, *Module));
   Builder->release();
 
   // for (Declaration *D : Program->getDeclarations())
@@ -17,7 +17,7 @@ CodeGenerator::handleProgram(Program *Program, std::string FileName) {
 // 	  Builder->emitFunction(cast<FunctionDecl>(D));
 // 	}
 //   }
-  return std::move(M);
+  return std::move(Module);
 }
 
 std::unique_ptr<CodeGenerator> createLLVMCodegen(llvm::LLVMContext &Ctx,

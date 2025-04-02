@@ -17,7 +17,7 @@ private:
   llvm::LLVMContext &Ctx;
   ASTContext &ASTCtx;
 
-  std::unique_ptr<llvm::Module> M;
+  std::unique_ptr<llvm::Module> Module;
   std::unique_ptr<codegen::CodeGenModule> Builder;
 };
 

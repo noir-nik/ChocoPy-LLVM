@@ -72,7 +72,7 @@ ParamDecl *ASTContext::createParamDecl(SMRange Loc, Identifier *Name,
 }
 
 ClassType *ASTContext::createClassType(SMRange Loc, StringRef ClassName) {
-  size_t TySize = sizeof(ClassType);
+  std::size_t TySize = sizeof(ClassType);
   void *Mem = allocate(TySize + ClassName.size() + 1);
   ClassType *CT = new (Mem) ClassType(Loc);
   CT->NameLength = ClassName.size();

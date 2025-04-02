@@ -16,7 +16,7 @@ void Lexer::exitCachingMode() {
 const Token &Lexer::PeekAhead(unsigned N) {
   assert(CachedTokenPos + N > CachedTokens.size() && "Confused caching.");
   exitCachingMode();
-  for (size_t C = CachedTokenPos + N - CachedTokens.size(); C > 0; --C) {
+  for (std::size_t C = CachedTokenPos + N - CachedTokens.size(); C > 0; --C) {
     CachedTokens.push_back(Token());
     lex(CachedTokens.back());
   }

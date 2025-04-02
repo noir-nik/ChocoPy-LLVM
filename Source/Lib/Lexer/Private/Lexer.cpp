@@ -176,7 +176,7 @@ bool Lexer::lexImpl(Token &Tok) {
     SMLoc E = SMLoc::getFromPointer(BufPtr);
     Tok.setLocation(SMRange(S, E));
     Diags.emitError(S, diag::err_unknow_token) << Tok;
-	// std::printf("badent\n");
+	// std::printf("badent1\n");
 
     return true;
   }
