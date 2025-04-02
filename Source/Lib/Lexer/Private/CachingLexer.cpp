@@ -1,4 +1,6 @@
-#include "chocopy-llvm/Lexer/Lexer.h"
+module;
+#include <cassert>
+module Lexer;
 
 namespace chocopy {
 void Lexer::enterCachingMode() {

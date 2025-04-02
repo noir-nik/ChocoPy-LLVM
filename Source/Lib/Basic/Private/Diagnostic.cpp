@@ -1,13 +1,13 @@
-#include "chocopy-llvm/Basic/Diagnostic.h"
-
-#include <llvm/ADT/SmallString.h>
-#include <llvm/Support/Format.h>
-#include <llvm/Support/raw_os_ostream.h>
+module Basic;
+import :SymbolTable;
+import :Diagnostic;
+import LLVM;
+import std;
 
 namespace {
 const char *DiagnosticText[] = {
 #define DIAG(ID, LEVEL, MSG) MSG,
-#include "chocopy-llvm/Basic/DiagnosticKinds.def"
+#include "DiagnosticKinds.def"
 };
 
 const char *getDiagnosticText(unsigned DiagId) {
@@ -33,7 +33,7 @@ void DiagnosticsEngine::report(SourceMgr::DiagKind Kind, SMLoc Loc,
 }
 
 void InFlightDiagnostic::emit() {
-  SmallString<100> Msg;
+  llvm::SmallString<100> Msg;
 
   switch (Args.size()) {
     break;

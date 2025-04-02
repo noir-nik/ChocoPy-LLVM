@@ -1,13 +1,10 @@
-#ifndef CHOCOPY_LLVM_LEXER_LEXER_H
-#define CHOCOPY_LLVM_LEXER_LEXER_H
+export module Lexer;
+import std;
 
-#include "chocopy-llvm/Basic/SymbolTable.h"
-#include "chocopy-llvm/Lexer/Token.h"
+import :Token;
+import LLVM;
 
-#include <llvm/Support/SourceMgr.h>
-
-namespace chocopy {
-class DiagnosticsEngine;
+export namespace chocopy {
 
 class Lexer {
 public:
@@ -81,4 +78,3 @@ private:
 	bool                      IsLogLineStart = false;
 };
 } // namespace chocopy
-#endif // CHOCOPY_LLVM_LEXER_LEXER_H

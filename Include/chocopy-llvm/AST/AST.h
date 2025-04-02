@@ -1,9 +1,6 @@
 #ifndef CHOCOPY_LLVM_AST_AST_H
 #define CHOCOPY_LLVM_AST_AST_H
 
-#include "chocopy-llvm/Basic/LLVM.h"
-#include "chocopy-llvm/Basic/SymbolTable.h"
-
 #include <llvm/ADT/ArrayRef.h>
 #include <llvm/ADT/StringRef.h>
 #include <llvm/Support/SMLoc.h>

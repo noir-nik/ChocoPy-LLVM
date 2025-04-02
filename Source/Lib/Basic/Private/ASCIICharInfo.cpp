@@ -1,10 +1,12 @@
-#include "chocopy-llvm/Basic/ASCIICharInfo.h"
+module Basic;
+import :ASCIICharInfo;
+import std;
 
 namespace chocopy {
 namespace ascii {
 
 // clang-format off
-const uint16_t InfoTable[256] = {
+const std::uint16_t gInfoTable[256] = {
   // 0 NUL         1 SOH         2 STX         3 ETX
   // 4 EOT         5 ENQ         6 ACK         7 BEL
   0           , 0           , 0           , 0           ,
