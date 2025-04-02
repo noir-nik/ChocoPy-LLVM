@@ -9,7 +9,7 @@ set(CMAKE_CXX_MODULE_STD 1)
 
 # Include directories
 set(INCLUDE_DIRS
-
+	"include"
 )
 include_directories(${INCLUDE_DIRS})
 
@@ -32,6 +32,7 @@ include_directories(${LLVM_INCLUDE_DIRS})
 link_directories(${LLVM_LIBRARY_DIRS})
 
 if(LLVM_LINK_LLVM_DYLIB)
+# if(0)
 	message(STATUS "Linking to LLVM dynamic shared library object")
 	set(llvm_libs LLVM)
 else()
@@ -78,6 +79,8 @@ include_directories(${LLVM_INCLUDE_DIR})
 link_libraries(${LLVM_DLL})
 
 endif() # LLVM_FOUND
+
+add_definitions(-Wno-deprecated-declarations)
 
 add_subdirectory(Source)
 

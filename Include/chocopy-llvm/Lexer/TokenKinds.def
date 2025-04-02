@@ -1,0 +1,89 @@
+#ifndef TOK
+#define TOK(ID)
+#endif
+
+#ifndef KEYWORD
+#define KEYWORD(ID, STR) TOK(kw_##ID)
+#endif
+
+#ifndef PUNCTUATOR
+#define PUNCTUATOR(ID, STR) TOK(ID)
+#endif
+
+TOK(unknown)
+
+TOK(identifier)
+TOK(idstring)
+
+TOK(INDENT)
+TOK(DEDENT)
+TOK(BADENT)
+TOK(NEWLINE)
+TOK(eof)
+
+TOK(string_literal)  // "foo"
+TOK(integer_literal) // 123
+
+KEYWORD(False,    "False")
+KEYWORD(None,     "None")
+KEYWORD(True,     "True")
+KEYWORD(and,      "and")
+KEYWORD(as,       "as")
+KEYWORD(assert,   "assert")
+KEYWORD(async,    "async")
+KEYWORD(await,    "await")
+KEYWORD(break,    "break")
+KEYWORD(class,    "class")
+KEYWORD(continue, "continue")
+KEYWORD(def,      "def")
+KEYWORD(del,      "del")
+KEYWORD(elif,     "elif")
+KEYWORD(else,     "else")
+KEYWORD(except,   "except")
+KEYWORD(finally,  "finally")
+KEYWORD(for,      "for")
+KEYWORD(from,     "from")
+KEYWORD(global,   "global")
+KEYWORD(if,       "if")
+KEYWORD(import,   "import")
+KEYWORD(in,       "in")
+KEYWORD(is,       "is")
+KEYWORD(lambda,   "lambda")
+KEYWORD(nonlocal, "nonlocal")
+KEYWORD(not,      "not")
+KEYWORD(or,       "or")
+KEYWORD(pass,     "pass")
+KEYWORD(raise,    "raise")
+KEYWORD(return,   "return")
+KEYWORD(try,      "try")
+KEYWORD(while,    "while")
+KEYWORD(with,     "with")
+KEYWORD(yield,    "yield")
+
+/// Operators ans delimiters
+PUNCTUATOR(slashslash,    "//")
+PUNCTUATOR(lessequal,     "<=")
+PUNCTUATOR(greaterequal,  ">=")
+PUNCTUATOR(equalequal,    "==")
+PUNCTUATOR(exclaimequal,  "!=")
+PUNCTUATOR(arrow,         "->")
+PUNCTUATOR(plus,          "+")
+PUNCTUATOR(minus,         "-")
+PUNCTUATOR(star,          "*")
+PUNCTUATOR(percent,       "%")
+PUNCTUATOR(less,          "<")
+PUNCTUATOR(greater,       ">")
+PUNCTUATOR(equal,         "=")
+PUNCTUATOR(l_paren,       "(")
+PUNCTUATOR(r_paren,       ")")
+PUNCTUATOR(l_square,      "[")
+PUNCTUATOR(r_square,      "]")
+PUNCTUATOR(comma,         ",")
+PUNCTUATOR(colon,         ":")
+PUNCTUATOR(period,        ".")
+PUNCTUATOR(semi,          ";")
+PUNCTUATOR(hash,          "#")
+
+#undef PUNCTUATOR
+#undef KEYWORD
+#undef TOK
