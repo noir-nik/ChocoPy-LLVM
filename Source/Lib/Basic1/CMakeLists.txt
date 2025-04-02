@@ -1,7 +1,9 @@
-set(LIBRARY_NAME Lex)
+set(LIBRARY_NAME Basic)
 
-add_library(Lex
-	Lexer.cpp
+file(GLOB_RECURSE SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "*.cpp")
+
+add_library(${LIBRARY_NAME}
+	${SOURCES}
 )
 
 file(GLOB MODULE_SOURCES RELATIVE ${CMAKE_CURRENT_SOURCE_DIR} "*.cppm")
@@ -10,8 +12,4 @@ target_sources(${LIBRARY_NAME} PUBLIC
 	FILE_SET CXX_MODULES
 	BASE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}
 	FILES ${MODULE_SOURCES}
-)
-
-target_link_libraries(${LIBRARY_NAME} PRIVATE
-	Basic
 )
