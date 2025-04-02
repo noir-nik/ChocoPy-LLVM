@@ -1,24 +1,16 @@
-#ifndef CHOCOPY_LLVM_SEMA_SEMA_H
-#define CHOCOPY_LLVM_SEMA_SEMA_H
+export module Sema;
+import AST;
+import Basic;
+export import :IdentifierResolver;
+export import :Scope;
 
-#include "chocopy-llvm/AST/AST.h"
-#include "chocopy-llvm/Sema/IdentifierResolver.h"
-
-#include <llvm/ADT/StringRef.h>
-#include <llvm/Support/SMLoc.h>
-
-namespace chocopy {
-class Scope;
-class ASTContext;
-class DiagnosticsEngine;
-class Lexer;
-class ValueType;
+export namespace chocopy {
 
 class Sema {
   class Analysis;
 
 public:
-  Sema(Lexer &L, ASTContext &C);
+  Sema(DiagnosticsEngine &Diags, ASTContext &C);
 
   void initialize();
   void initializeGlobalScope();
@@ -69,7 +61,6 @@ private:
   using Globals = SmallVector<GlobalDecl *, 4>;
 
 private:
-  Lexer &TheLexer;
   DiagnosticsEngine &Diags;
   ASTContext &Ctx;
   std::shared_ptr<Scope> GlobalScope;
@@ -77,4 +68,3 @@ private:
   IdentifierResolver IdResolver;
 };
 } // namespace chocopy
-#endif // CHOCOPY_LLVM_SEMA_SEMA_H

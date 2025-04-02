@@ -1,7 +1,13 @@
-#include "chocopy-llvm/Analysis/CFG.h"
-#include "chocopy-llvm/AST/AST.h"
-#include "chocopy-llvm/AST/ExprVisitor.h"
-#include "chocopy-llvm/AST/StmtVisitor.h"
+module;
+
+#include <cassert>
+
+module Analysis;
+import :CFG;
+import AST;
+import Basic;
+
+import std;
 
 namespace chocopy {
 namespace {

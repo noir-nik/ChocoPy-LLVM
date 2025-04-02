@@ -12,6 +12,7 @@ import FileBuffer;
 import Basic;
 import AST;
 import Lexer;
+import Sema;
 import LLVM;
 
 using namespace chocopy;
@@ -37,19 +38,19 @@ int main(int argc, char* argv[]) {
 
 	TextDiagnosticPrinter DiagPrinter(SrcMgr);
 	DiagnosticsEngine     DiagsEngine(&DiagPrinter);
-	// Lexer TheLexer(DiagsEngine, SrcMgr);
-	// TheLexer.reset();
-	// Token TheToken;
-	// while (bool boolValue = TheLexer.lex(TheToken)) {
-	// 	std::printf(" %d ", boolValue);
-	// 	TheToken.print();
-	// 	std::printf("\n");
-	// 	if (TheToken.getKind() == tok::eof)
-	// 		break;
-	// }
+	Lexer TheLexer(DiagsEngine, SrcMgr);
+	TheLexer.reset();
+	Token TheToken;
+	while (bool boolValue = TheLexer.lex(TheToken)) {
+		std::printf(" %d ", boolValue);
+		TheToken.print();
+		std::printf("\n");
+		if (TheToken.getKind() == tok::eof)
+			break;
+	}
 
 	ASTContext ASTCtx(SrcMgr);
-	// Sema       Actions(TheLexer, ASTCtx);
+	Sema       Actions(DiagsEngine, ASTCtx);
 	// Parser     TheParser(ASTCtx, TheLexer, Actions);
 
 	// ASTCtx.initialize(TheLexer);

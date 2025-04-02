@@ -1,14 +1,9 @@
-#include "chocopy-llvm/Sema/Sema.h"
-#include "chocopy-llvm/AST/ASTContext.h"
-#include "chocopy-llvm/AST/RecursiveASTVisitor.h"
-#include "chocopy-llvm/AST/Type.h"
-#include "chocopy-llvm/Analysis/CFG.h"
-#include "chocopy-llvm/Basic/Diagnostic.h"
-#include "chocopy-llvm/Lexer/Lexer.h"
-#include "chocopy-llvm/Sema/Scope.h"
-
-#include <llvm/ADT/ArrayRef.h>
-#include <llvm/ADT/TypeSwitch.h>
+module Sema;
+import AST;
+// import Analysis;
+import Basic;
+import std;
+import :Scope;
 
 namespace chocopy {
 static raw_ostream &operator<<(raw_ostream &Stream, const Type &T) {
@@ -191,8 +186,7 @@ private:
   DiagnosticsEngine &Diags;
 };
 
-Sema::Sema(Lexer &L, ASTContext &C)
-    : TheLexer(L), Diags(TheLexer.getDiagnostics()), Ctx(C) {}
+Sema::Sema(DiagnosticsEngine &Diags, ASTContext &C): Diags(Diags), Ctx(C) {}
 
 void Sema::initialize() {
   ClassDef *ObjCD = Ctx.getObjectClass();
