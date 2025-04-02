@@ -1,11 +1,3 @@
-// #include "chocopy-llvm/AST/ASTContext.h"
-// #include "chocopy-llvm/AST/TextDiagnosticPrinter.h"
-// #include "chocopy-llvm/Analysis/CFG.h"
-// #include "chocopy-llvm/CodeGen/ModuleBuilder.h"
-// #include "chocopy-llvm/Lexer/Lexer.h"
-// #include "chocopy-llvm/Parser/Parser.h"
-// #include "chocopy-llvm/Sema/Sema.h"
-
 import std;
 import FileIOUtils;
 import FileBuffer;
@@ -14,6 +6,7 @@ import AST;
 import Lexer;
 import Sema;
 import Parser;
+import CodeGen;
 import LLVM;
 
 using namespace chocopy;
@@ -27,22 +20,22 @@ int main(int argc, char* argv[]) {
 		std::printf("Failed to read file\n");
 		return -1;
 	}
+	// std::printf("%s\n", content->c_str());
 
 	// MemBuffer Buffer(*content);
-
 	auto Buffer = std::make_unique<FileBuffer>(*content);
-
-	// std::printf("%s\n", content->c_str());
 
 	SourceMgr SrcMgr;
 	SrcMgr.AddNewSourceBuffer(std::move(Buffer), llvm::SMLoc());
 
 	TextDiagnosticPrinter DiagPrinter(SrcMgr);
 	DiagnosticsEngine     DiagsEngine(&DiagPrinter);
+
 	Lexer TheLexer(DiagsEngine, SrcMgr);
 	TheLexer.reset();
+
 	Token TheToken;
-	while (bool boolValue = TheLexer.lex(TheToken)) {
+	while (bool BoolValue = TheLexer.lex(TheToken)) {
 		TheToken.print();
 		std::printf("\n");
 		if (TheToken.getKind() == tok::eof)
@@ -58,11 +51,11 @@ int main(int argc, char* argv[]) {
 
 	if (Program* P = TheParser.parse()) {
 		P->dump(ASTCtx);
-		// llvm::LLVMContext LLVMCtx;
+		llvm::LLVMContext LLVMCtx;
 
-		// std::unique_ptr<CodeGenerator> CodeGen = createLLVMCodegen(LLVMCtx, ASTCtx);
-		// std::unique_ptr<llvm::Module>  M       = CodeGen->handleProgram(P, file_path);
+		std::unique_ptr<CodeGenerator> CodeGen = createLLVMCodegen(LLVMCtx, ASTCtx);
+		std::unique_ptr<llvm::Module>  M       = CodeGen->handleProgram(P, file_path);
 	}
-	
+
 	return 0;
 }

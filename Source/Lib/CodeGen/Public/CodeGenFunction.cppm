@@ -1,30 +1,11 @@
-#ifndef CHOCOPY_LLVM_CODEGEN_CODEGENFUNCTION_H
-#define CHOCOPY_LLVM_CODEGEN_CODEGENFUNCTION_H
+export module CodeGen:CodeGenFunction;
+import :CodeGenModule;
 
-#include "chocopy-llvm/CodeGen/CodeGenModule.h"
+import Basic;
+import AST;
+import std;
 
-#include <llvm/IR/IRBuilder.h>
-
-namespace llvm {
-class Function;
-class BasicBlock;
-class Value;
-class Type;
-} // namespace llvm
-
-namespace chocopy {
-class ASTContext;
-class Declaration;
-class FuncDef;
-class Stmt;
-class AssignStmt;
-class Expr;
-class DeclRef;
-class BinaryExpr;
-class CallExpr;
-class IntegerLiteral;
-class ValueType;
-
+export namespace chocopy {
 namespace codegen {
 class CodeGenFunction {
 public:
@@ -55,4 +36,3 @@ private:
 };
 } // namespace codegen
 } // namespace chocopy
-#endif // CHOCOPY_LLVM_CODEGEN_CODEGENFUNCTION_H

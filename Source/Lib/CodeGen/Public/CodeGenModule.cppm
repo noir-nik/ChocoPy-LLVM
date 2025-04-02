@@ -1,29 +1,13 @@
-#ifndef CHOCOPY_LLVM_CODEGEN_CODEGENMODULE_H
-#define CHOCOPY_LLVM_CODEGEN_CODEGENMODULE_H
+export module CodeGen:CodeGenModule;
+import Basic;
+import AST;
+import std;
 
-#include "chocopy-llvm/Basic/LLVM.h"
-
-#include <llvm/ADT/DenseMap.h>
-#include <llvm/ADT/StringMap.h>
-#include <llvm/Support/Allocator.h>
-
-namespace llvm {
-class Module;
-class PointerType;
-class StructType;
-class Type;
-class Value;
-class LLVMContext;
-class GlobalVariable;
-class Constant;
-class Function;
-} // namespace llvm
-
-namespace chocopy {
-class ASTContext;
-class Declaration;
-class Type;
-class Literal;
+export namespace chocopy {
+// class ASTContext;
+// class Declaration;
+// class Type;
+// class Literal;
 
 namespace codegen {
 class CodeGenModule {
@@ -85,4 +69,3 @@ private:
 };
 } // namespace codegen
 } // namespace chocopy
-#endif // CHOCOPY_LLVM_CODEGEN_CODEGENMODULE_H

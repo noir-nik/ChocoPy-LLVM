@@ -1,18 +1,10 @@
-#ifndef CHOCOPY_LLVM_CODEGEN_MODULEBUILDER_H
-#define CHOCOPY_LLVM_CODEGEN_MODULEBUILDER_H
+export module CodeGen:ModuleBuilder;
+import :CodeGenModule;
+import Basic;
+import AST;
+import std;
 
-#include "chocopy-llvm/CodeGen/CodeGenModule.h"
-
-#include <llvm/IR/Module.h>
-#include <llvm/Target/TargetMachine.h>
-
-#include <memory>
-#include <string>
-
-namespace chocopy {
-class ASTContext;
-class Program;
-
+export namespace chocopy {
 class CodeGenerator {
 public:
   CodeGenerator(llvm::LLVMContext &Ctx, ASTContext &ASTCtx)
@@ -32,4 +24,3 @@ private:
 std::unique_ptr<CodeGenerator> createLLVMCodegen(llvm::LLVMContext &Ctx,
                                                  ASTContext &ASTCtx);
 } // namespace chocopy
-#endif // CHOCOPY_LLVM_CODEGEN_MODULEBUILDER_H

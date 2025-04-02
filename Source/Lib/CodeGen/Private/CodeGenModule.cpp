@@ -1,16 +1,11 @@
-#include "chocopy-llvm/CodeGen/CodeGenModule.h"
-#include "chocopy-llvm/AST/AST.h"
-#include "chocopy-llvm/AST/ASTContext.h"
-#include "chocopy-llvm/AST/Type.h"
-#include "chocopy-llvm/CodeGen/CodeGenFunction.h"
-
-#include <llvm/ADT/SmallString.h>
-#include <llvm/ADT/TypeSwitch.h>
-#include <llvm/IR/BasicBlock.h>
-#include <llvm/IR/Constants.h>
-#include <llvm/IR/Function.h>
-#include <llvm/IR/Module.h>
-#include <llvm/IR/Type.h>
+module;
+#include <cassert>
+module CodeGen;
+import Basic;
+import AST;
+import std;
+import :CodeGenFunction;
+import :CodeGenModule;
 
 namespace chocopy {
 namespace codegen {
