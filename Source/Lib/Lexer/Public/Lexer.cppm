@@ -9,7 +9,6 @@ export namespace chocopy {
 class Lexer {
 public:
 	Lexer(DiagnosticsEngine& Diags, llvm::SourceMgr& SrcMgr);
-	//   Lexer(std::string_view Code);
 	Lexer(DiagnosticsEngine& Diags, std::string_view Code);
 
 	DiagnosticsEngine& getDiagnostics() const { return Diags; }

@@ -1,14 +1,15 @@
-#ifndef CHOCOPY_LLVM_AST_JSONASTDUMPER_H
-#define CHOCOPY_LLVM_AST_JSONASTDUMPER_H
+export module AST:JSONASTDumper;
+import Basic;
+import :DeclVisitor;
+import :StmtVisitor;
+import :ExprVisitor;
+import :TypeAnnotationVisitor;
+import :TypeVisitor;
 
-#include "chocopy-llvm/AST/AST.h"
-#include "chocopy-llvm/AST/ASTNodeTraverser.h"
-#include "chocopy-llvm/Basic/LLVM.h"
+import :ASTNodeTraverser;
 
-#include <llvm/Support/JSON.h>
-#include <llvm/Support/raw_ostream.h>
 
-namespace chocopy {
+export namespace chocopy {
 class JSONNodeDumper : public ConstDeclVisitor<JSONNodeDumper>,
                        public ConstStmtVisitor<JSONNodeDumper>,
                        public ConstExprVisitor<JSONNodeDumper>,
@@ -100,4 +101,3 @@ private:
   JSONNodeDumper NodeDumper;
 };
 } // namespace chocopy
-#endif // CHOCOPY_LLVM_AST_JSONASTDUMPER_H

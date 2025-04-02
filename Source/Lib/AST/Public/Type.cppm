@@ -1,11 +1,8 @@
-#ifndef CHOCOPY_LLVM_AST_TYPE_H
-#define CHOCOPY_LLVM_AST_TYPE_H
+export module AST:Type;
+import Basic;
+import std;
 
-#include "chocopy-llvm/Basic/LLVM.h"
-
-#include <llvm/ADT/StringRef.h>
-
-namespace chocopy {
+export namespace chocopy {
 class ASTContext;
 class ValueType;
 
@@ -131,4 +128,3 @@ private:
   ValueType *ElementType;
 };
 } // namespace chocopy
-#endif // CHOCOPY_LLVM_AST_TYPE_H

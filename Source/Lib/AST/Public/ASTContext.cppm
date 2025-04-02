@@ -1,27 +1,17 @@
-#ifndef CHOCOPY_LLVM_AST_ASTCONTEXT_H
-#define CHOCOPY_LLVM_AST_ASTCONTEXT_H
-
-#include "chocopy-llvm/AST/AST.h"
-#include "chocopy-llvm/AST/Type.h"
-
-#include <llvm/ADT/DenseMap.h>
-#include <llvm/ADT/DenseSet.h>
-#include <llvm/ADT/Hashing.h>
-#include <llvm/Support/Allocator.h>
-#include <llvm/Support/SourceMgr.h>
-
-namespace chocopy {
-class Lexer;
-class SymbolTable;
+export module AST:ASTContext;
+import Basic;
+import :AST;
+import :Type;
+export namespace chocopy {
 
 class ASTContext {
 public:
-//   ASTContext(llvm::SourceMgr &SrcMgr) : SrcMgr(SrcMgr) {}
+  ASTContext(llvm::SourceMgr &SrcMgr) : SrcMgr(SrcMgr) {}
 
-  void initialize(Lexer &Lex);
+  void initialize(SymbolTable &ST);
 
 public:
-//   const llvm::SourceMgr &getSourceMgr() const { return SrcMgr; }
+  const llvm::SourceMgr &getSourceMgr() const { return SrcMgr; }
 
   inline ClassDef *getObjectClass() const { return ObjClass; }
   inline ClassDef *getIntClass() const { return IntClass; }
@@ -85,7 +75,7 @@ public:
   IndexExpr *createIndexExpr(SMRange Loc, Expr *List, Expr *Index);
   ListExpr *createListExpr(SMRange Loc, const ExprList &Elts);
   BooleanLiteral *createBooleanLiteral(SMRange Loc, bool Value);
-  IntegerLiteral *createIntegerLiteral(SMRange Loc, int64_t Value);
+  IntegerLiteral *createIntegerLiteral(SMRange Loc, std::int64_t Value);
   NoneLiteral *createNoneLiteral(SMRange Loc);
   StringLiteral *createStringLiteral(SMRange Loc, StringRef Value);
   MemberExpr *createMemberExpr(SMRange Loc, Expr *O, DeclRef *M);
@@ -110,7 +100,7 @@ private:
     return new (Mem) NodeTy(std::forward<ArgsTy>(Args)...);
   }
 
-  void *allocate(size_t Size, unsigned Align = 8) const {
+  void *allocate(std::size_t Size, unsigned Align = 8) const {
     return BumpAlloc.Allocate(Size, Align);
   }
 
@@ -173,7 +163,7 @@ private:
 
 private:
   mutable llvm::BumpPtrAllocator BumpAlloc;
-//   llvm::SourceMgr &SrcMgr;
+  llvm::SourceMgr &SrcMgr;
   Program *TheProgram = nullptr;
   ClassDef *ObjClass = nullptr;
   ClassDef *IntClass = nullptr;
@@ -199,4 +189,3 @@ private:
   llvm::DenseSet<FuncType *, FuncTypeKeyInfo> FuncTypes;
 };
 } // namespace chocopy
-#endif // CHOCOPY_LLVM_AST_ASTCONTEXT_H

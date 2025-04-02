@@ -1,5 +1,6 @@
-#include "chocopy-llvm/AST/JSONASTDumper.h"
-#include "chocopy-llvm/AST/ASTContext.h"
+module AST;
+import :JSONASTDumper;
+import Basic;
 
 namespace chocopy {
 using llvm::SMRange;
@@ -15,7 +16,7 @@ void JSONNodeDumper::visit(const Declaration *D) {
   case Declaration::DeclKind::KIND:                                            \
     JOS.attribute("kind", #KIND);                                              \
     break;
-#include "chocopy-llvm/AST/DeclarationNodes.def"
+#include "DeclarationNodes.def"
   }
   writeLocation(D->getLocation());
   ConstDeclVisitor<JSONNodeDumper>::visit(D);
@@ -28,7 +29,7 @@ void JSONNodeDumper::visit(const TypeAnnotation *T) {
   case TypeAnnotation::Kind::KIND:                                             \
     JOS.attribute("kind", #CLASS);                                             \
     break;
-#include "chocopy-llvm/AST/TypeAnnotationNodes.def"
+#include "TypeAnnotationNodes.def"
   }
 
   writeLocation(T->getLocation());
@@ -51,7 +52,7 @@ void JSONNodeDumper::visit(const Stmt *S) {
   case Stmt::StmtKind::KIND:                                                   \
     JOS.attribute("kind", #KIND);                                              \
     break;
-#include "chocopy-llvm/AST/StmtNodes.def"
+#include "StmtNodes.def"
   }
 
   writeLocation(S->getLocation());
@@ -64,7 +65,7 @@ void JSONNodeDumper::visit(const Expr *E) {
   case Expr::Kind::KIND:                                                       \
     JOS.attribute("kind", #KIND);                                              \
     break;
-#include "chocopy-llvm/AST/ExprNodes.def"
+#include "ExprNodes.def"
   }
 
   writeLocation(E->getLocation());
@@ -77,7 +78,7 @@ void JSONNodeDumper::visit(const Literal *L) {
   case Literal::LiteralType::KIND:                                             \
     JOS.attribute("kind", #CLASS);                                             \
     break;
-#include "chocopy-llvm/AST/ExprNodes.def"
+#include "ExprNodes.def"
   }
 
   writeLocation(L->getLocation());
@@ -142,14 +143,14 @@ void JSONNodeDumper::visitListValueType(const ListValueType *L) {
 }
 
 void JSONNodeDumper::writeLocation(llvm::SMRange Loc) {
-//   auto Start = Ctx.getSourceMgr().getLineAndColumn(Loc.Start);
-//   auto End = Ctx.getSourceMgr().getLineAndColumn(Loc.End);
+  auto Start = Ctx.getSourceMgr().getLineAndColumn(Loc.Start);
+  auto End = Ctx.getSourceMgr().getLineAndColumn(Loc.End);
   JOS.attributeBegin("location");
   JOS.arrayBegin();
-//   JOS.value(Start.first);
-//   JOS.value(Start.second);
-//   JOS.value(End.first);
-//   JOS.value(End.second);
+  JOS.value(Start.first);
+  JOS.value(Start.second);
+  JOS.value(End.first);
+  JOS.value(End.second);
   JOS.arrayEnd();
   JOS.attributeEnd();
 }

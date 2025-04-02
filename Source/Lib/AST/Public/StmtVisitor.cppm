@@ -1,11 +1,14 @@
-#ifndef CHOCOPY_LLVM_AST_STMTVISITOR_H
-#define CHOCOPY_LLVM_AST_STMTVISITOR_H
+module;
 
-#include "chocopy-llvm/AST/AST.h"
+#include <llvm/Support/ErrorHandling.h>
 
-#include <llvm/ADT/STLExtras.h>
+export module AST:StmtVisitor;
+import Basic;
 
-namespace chocopy {
+import :AST;
+
+// #include <llvm/ADT/STLExtras.h>
+export namespace chocopy {
 namespace stmtvisitor {
 
 template <template <typename> class Ptr, typename ImplClass,
@@ -21,7 +24,7 @@ public:
     switch (S->getKind()) {
 #define STMT(CLASS, KIND)                                                      \
   case Stmt::StmtKind::KIND:  DISPATCH(CLASS, CLASS);
-#include "chocopy-llvm/AST/StmtNodes.def"
+#include "StmtNodes.def"
     }
 
     llvm_unreachable("Unsupported statement!");
@@ -53,4 +56,3 @@ class ConstStmtVisitor
     : public stmtvisitor::Base<llvm::make_const_ptr, Impl, RetTy> {};
 } // namespace chocopy
 
-#endif // CHOCOPY_LLVM_AST_STMTVISITOR_H

@@ -3,7 +3,6 @@ import LLVM;
 import :TokenKinds;
 
 export namespace chocopy {
-class Declaration;
 using llvm::StringRef;
 
 class SymbolInfo {

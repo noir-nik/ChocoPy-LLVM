@@ -10,6 +10,7 @@ import std;
 import FileIOUtils;
 import FileBuffer;
 import Lexer;
+import Basic;
 import LLVM;
 
 using namespace chocopy;
@@ -30,11 +31,11 @@ int main(int argc, char* argv[]) {
 
 	// std::printf("%s\n", content->c_str());
 
-	// SourceMgr SrcMgr;
-	// SrcMgr.AddNewSourceBuffer(std::move(Buffer), llvm::SMLoc());
+	SourceMgr SrcMgr;
+	SrcMgr.AddNewSourceBuffer(std::move(Buffer), llvm::SMLoc());
 
-	// TextDiagnosticPrinter DiagPrinter;
-	// DiagnosticsEngine     DiagsEngine(&DiagPrinter);
+	TextDiagnosticPrinter DiagPrinter(SrcMgr);
+	DiagnosticsEngine     DiagsEngine(&DiagPrinter);
 	// Lexer TheLexer(DiagsEngine, SrcMgr);
 	// TheLexer.reset();
 	// Token TheToken;

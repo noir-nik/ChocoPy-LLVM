@@ -1,11 +1,12 @@
-#ifndef CHOCOPY_LLVM_AST_TYPEVISITOR_H
-#define CHOCOPY_LLVM_AST_TYPEVISITOR_H
+module;
 
-#include "chocopy-llvm/AST/Type.h"
+#include <llvm/Support/ErrorHandling.h>
 
-#include <llvm/ADT/STLExtras.h>
+export module AST:TypeVisitor;
+import Basic;
+import :Type;
 
-namespace chocopy {
+export namespace chocopy {
 namespace typevisitor {
 
 template <template <typename> class Ptr, typename ImplClass,
@@ -21,7 +22,7 @@ public:
     switch (T->getTypeKind()) {
 #define TYPE(CLASS, KIND)                                                      \
   case Type::TypeKind::KIND:  DISPATCH(CLASS, CLASS);
-#include "chocopy-llvm/AST/TypeNodes.def"
+#include "TypeNodes.def"
     }
 
     llvm_unreachable("Unsupported type!");
@@ -32,7 +33,7 @@ public:
     switch (T->getValueKind()) {
 #define VALUE_TYPE(CLASS, KIND)                                                      \
   case ValueType::ValueKind::KIND:  DISPATCH(CLASS, CLASS);
-#include "chocopy-llvm/AST/TypeNodes.def"
+#include "TypeNodes.def"
     }
 
     llvm_unreachable("Unsupported value type!");
@@ -62,5 +63,3 @@ template <typename Impl>
 class ConstTypeVisitor : public typevisitor::Base<llvm::make_const_ptr, Impl> {
 };
 } // namespace chocopy
-
-#endif // CHOCOPY_LLVM_AST_TYPEVISITOR_H
