@@ -1,28 +1,18 @@
-#ifndef CHOCOPY_LLVM_ANALYSIS_CFG_H
-#define CHOCOPY_LLVM_ANALYSIS_CFG_H
+export module Analysis:CFG;
 
-#include "chocopy-llvm/Basic/LLVM.h"
+import Basic;
+import AST;
+import std;
 
-#include <llvm/ADT/GraphTraits.h>
-#include <llvm/ADT/PointerIntPair.h>
-#include <llvm/ADT/STLExtras.h>
-#include <llvm/ADT/iterator.h>
-#include <llvm/Support/Allocator.h>
+export namespace chocopy {
+using llvm::Inverse;
 
-#include <memory>
-
-namespace chocopy {
-
-class FuncDef;
-class Expr;
-class Stmt;
-class Program;
 class CFG;
 class CFGBlock;
 
 class CFGElement {
 public:
-  enum class Kind : uint8_t { Stmt, Expr };
+  enum class Kind : std::uint8_t { Stmt, Expr };
 
 public:
   CFGElement(CFGBlock *Parent, Stmt *S) : Parent(Parent), Ptr(S) {
@@ -88,17 +78,17 @@ private:
 
   protected:
     CFGBlockPtr Parent;
-    size_t Index;
+    std::size_t Index;
 
   public:
-    ElementRefImpl(CFGBlockPtr Parent, size_t Index)
+    ElementRefImpl(CFGBlockPtr Parent, std::size_t Index)
         : Parent(Parent), Index(Index) {}
 
     template <bool IsOtherConst>
     ElementRefImpl(ElementRefImpl<IsOtherConst> Other)
         : ElementRefImpl(Other.Parent, Other.Index) {}
 
-    size_t getIndexInBlock() const { return Index; }
+    std::size_t getIndexInBlock() const { return Index; }
 
     CFGBlockPtr getParent() { return Parent; }
     CFGBlockPtr getParent() const { return Parent; }
@@ -171,13 +161,13 @@ private:
 
   private:
     template <bool IsOtherConst>
-    static size_t
+    static std::size_t
     getIndexInBlock(CFGBlock::ElementRefIterator<true, IsOtherConst> E) {
       return E.Parent->size() - (E.Pos - E.Parent->rbegin()) - 1;
     }
 
     template <bool IsOtherConst>
-    static size_t
+    static std::size_t
     getIndexInBlock(CFGBlock::ElementRefIterator<false, IsOtherConst> E) {
       return E.Pos - E.Parent->begin();
     }
@@ -198,11 +188,11 @@ private:
       ++*this;
       return Ret;
     }
-    ElementRefIterator operator+(size_t count) {
+    ElementRefIterator operator+(std::size_t count) {
       this->Pos += count;
       return *this;
     }
-    ElementRefIterator operator-(size_t count) {
+    ElementRefIterator operator-(std::size_t count) {
       this->Pos -= count;
       return *this;
     }
@@ -218,7 +208,7 @@ public:
   using reverse_iterator = ElementList::iterator;
   using const_reverse_iterator = ElementList::const_iterator;
 
-  size_t getIndexInCFG() const;
+  std::size_t getIndexInCFG() const;
 
   CFGElement front() const { return Elements.back(); }
   CFGElement back() const { return Elements.front(); }
@@ -268,7 +258,7 @@ public:
   unsigned size() const { return Elements.size(); }
   bool empty() const { return Elements.empty(); }
 
-  CFGElement operator[](size_t i) const { return Elements[i]; }
+  CFGElement operator[](std::size_t i) const { return Elements[i]; }
 
   // CFG iterators
   using AdjacentBlocks = SmallVector<CFGBlock *>;
@@ -526,4 +516,3 @@ struct GraphTraits<Inverse<const ::chocopy::CFG *>>
 };
 
 } // namespace llvm
-#endif // CHOCOPY_LLVM_ANALYSIS_CFG_H

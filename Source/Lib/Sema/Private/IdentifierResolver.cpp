@@ -1,5 +1,9 @@
-#include "chocopy-llvm/Sema/IdentifierResolver.h"
-#include "chocopy-llvm/AST/AST.h"
+module;
+#include <cassert>
+module Sema;
+import AST;
+import std;
+import :IdentifierResolver;
 
 namespace chocopy {
 class IdentifierResolver::IdDeclInfoMap {
@@ -85,7 +89,7 @@ auto IdentifierResolver::IdDeclInfoMap::operator[](SymbolInfo *SI)
   }
   IdDeclInfo *IDI = &CurPool->Pool[CurIdx];
   SI->setFETokenInfo(
-      reinterpret_cast<void *>(reinterpret_cast<uintptr_t>(IDI) | 0x1));
+      reinterpret_cast<void *>(reinterpret_cast<std::uintptr_t>(IDI) | 0x1));
   ++CurIdx;
   return *IDI;
 }

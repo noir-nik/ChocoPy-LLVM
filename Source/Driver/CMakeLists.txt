@@ -10,7 +10,7 @@ target_link_libraries(${DRIVER_NAME} PRIVATE
     chocopy-llvm-AST
     # chocopy-llvm-analysis
     # chocopy-llvm-codegen
-    # chocopy-llvm-sema
+    chocopy-llvm-sema
     # chocopy-llvm-parser
     chocopy-llvm-lexer
 )

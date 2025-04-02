@@ -1,12 +1,8 @@
-#include "chocopy-llvm/AST/AST.h"
-#include "chocopy-llvm/AST/ExprVisitor.h"
-#include "chocopy-llvm/AST/RecursiveASTVisitor.h"
-#include "chocopy-llvm/AST/StmtVisitor.h"
-#include "chocopy-llvm/Analysis/CFG.h"
-
-#include <llvm/ADT/DenseMap.h>
-#include <llvm/Support/Format.h>
-#include <llvm/Support/raw_ostream.h>
+module Analysis;
+import :CFG;
+import AST;
+import Basic;
+import std;
 
 namespace chocopy {
 namespace {

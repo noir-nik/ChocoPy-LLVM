@@ -1,8 +1,7 @@
 export module Lexer;
-import std;
+export import :Token;
 
-import :Token;
-import LLVM;
+import std;
 
 export namespace chocopy {
 

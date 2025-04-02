@@ -1,15 +1,9 @@
-#ifndef CHOCOPY_LLVM_SEMA_SCOPE_H
-#define CHOCOPY_LLVM_SEMA_SCOPE_H
+export module Sema:Scope;
+import Basic;
+import AST;
+import std;
 
-#include "chocopy-llvm/Basic/LLVM.h"
-
-#include <llvm/ADT/SmallPtrSet.h>
-#include <llvm/ADT/StringRef.h>
-
-#include <memory>
-
-namespace chocopy {
-class Declaration;
+export namespace chocopy {
 
 class Scope {
 private:
@@ -56,4 +50,3 @@ private:
   DeclSetTy Decls;
 };
 } // namespace chocopy
-#endif // CHOCOPY_LLVM_SEMA_SCOPE_H

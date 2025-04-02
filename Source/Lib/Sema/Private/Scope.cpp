@@ -1,5 +1,6 @@
-#include "chocopy-llvm/Sema/Scope.h"
-#include "chocopy-llvm/AST/AST.h"
+module Sema;
+import AST;
+import :Scope;
 
 namespace chocopy {
 void Scope::addDecl(Declaration *D) { Decls.insert(D); }

@@ -8,11 +8,9 @@ module;
 
 export module Lexer:Token;
 import std;
-// import LLVM;
-
 import Basic;
 
-namespace chocopy {
+export namespace chocopy {
 using llvm::SMRange;
 
 class Token {
