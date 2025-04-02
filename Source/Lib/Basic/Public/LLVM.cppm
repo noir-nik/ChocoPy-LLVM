@@ -18,7 +18,6 @@ module;
 #include <llvm/Support/SourceMgr.h>
 #include <llvm/Support/VersionTuple.h>
 
-
 export module LLVM;
 
 // NOLINTBEGIN(misc-unused-using-decls)
@@ -27,11 +26,11 @@ using llvm::BumpPtrAllocator;
 using llvm::DenseMap;
 using llvm::DenseMapInfo;
 using llvm::DenseSet;
-using llvm::TypeSwitch;
 using llvm::formatv;
 using llvm::hash_combine;
 using llvm::hash_combine_range;
 using llvm::make_const_ptr;
+using llvm::outs;
 using llvm::SmallString;
 using llvm::SmallVector;
 using llvm::SMLoc;
@@ -42,10 +41,7 @@ using llvm::StringMapEntry;
 using llvm::StringRef;
 using llvm::StringSwitch;
 using llvm::Twine;
-
-using llvm::outs;
-using llvm::Twine;
-
+using llvm::TypeSwitch;
 using llvm::operator==;
 using llvm::operator!=;
 using llvm::operator<=;
@@ -53,10 +49,13 @@ using llvm::operator>=;
 using llvm::operator<;
 using llvm::operator>;
 
-namespace json {
+using llvm::Twine;
+
+} // namespace llvm
+
+export namespace llvm::json {
 using llvm::json::OStream;
 };
-} // namespace llvm
 
 export namespace chocopy {
 // Casting operators.

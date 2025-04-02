@@ -6,6 +6,7 @@ module AST;
 import :AST;
 import :ASTContext;
 import :JSONASTDumper;
+import Basic;
 
 namespace chocopy {
 void Program::dump(ASTContext &C) const {
