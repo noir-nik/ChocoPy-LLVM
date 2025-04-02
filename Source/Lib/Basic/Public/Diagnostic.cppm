@@ -1,17 +1,12 @@
-#ifndef CHOCOPY_LLVM_BASIC_DIAGNOSTIC_H
-#define CHOCOPY_LLVM_BASIC_DIAGNOSTIC_H
+export module Basic:Diagnostic;
+import std;
+import LLVM;
 
-#include "chocopy-llvm/Basic/LLVM.h"
-
-#include <llvm/ADT/Twine.h>
-#include <llvm/Support/FormatVariadic.h>
-#include <llvm/Support/SMLoc.h>
-#include <llvm/Support/SourceMgr.h>
-
-namespace chocopy {
+export namespace chocopy {
 using llvm::SMLoc;
-using llvm::SMRange;
 using llvm::SourceMgr;
+using llvm::StringRef;
+using llvm::SmallVector;
 
 class DiagnosticsEngine;
 class InFlightDiagnostic;
@@ -19,7 +14,7 @@ class InFlightDiagnostic;
 namespace diag {
 enum {
 #define DIAG(ID, LEVEL, MSG) ID,
-#include "chocopy-llvm/Basic/DiagnosticKinds.def"
+#include "DiagnosticKinds.def"
 };
 } // namespace diag
 
@@ -100,5 +95,3 @@ private:
 };
 
 } // namespace chocopy
-
-#endif // CHOCOPY_LLVM_BASIC_DIAGNOSTIC_H

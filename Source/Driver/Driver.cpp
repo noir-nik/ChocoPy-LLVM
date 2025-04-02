@@ -1,14 +1,16 @@
-#include "chocopy-llvm/AST/ASTContext.h"
-#include "chocopy-llvm/AST/TextDiagnosticPrinter.h"
-#include "chocopy-llvm/Analysis/CFG.h"
-#include "chocopy-llvm/CodeGen/ModuleBuilder.h"
-#include "chocopy-llvm/Lexer/Lexer.h"
-#include "chocopy-llvm/Parser/Parser.h"
-#include "chocopy-llvm/Sema/Sema.h"
+// #include "chocopy-llvm/AST/ASTContext.h"
+// #include "chocopy-llvm/AST/TextDiagnosticPrinter.h"
+// #include "chocopy-llvm/Analysis/CFG.h"
+// #include "chocopy-llvm/CodeGen/ModuleBuilder.h"
+// #include "chocopy-llvm/Lexer/Lexer.h"
+// #include "chocopy-llvm/Parser/Parser.h"
+// #include "chocopy-llvm/Sema/Sema.h"
 
 import std;
 import FileIOUtils;
 import FileBuffer;
+import Lexer;
+import LLVM;
 
 using namespace chocopy;
 using namespace llvm;
@@ -28,39 +30,36 @@ int main(int argc, char* argv[]) {
 
 	// std::printf("%s\n", content->c_str());
 
-	SourceMgr SrcMgr;
-	SrcMgr.AddNewSourceBuffer(std::move(Buffer), llvm::SMLoc());
+	// SourceMgr SrcMgr;
+	// SrcMgr.AddNewSourceBuffer(std::move(Buffer), llvm::SMLoc());
 
-	TextDiagnosticPrinter DiagPrinter;
-	DiagnosticsEngine     DiagsEngine(&DiagPrinter);
-	Lexer TheLexer(DiagsEngine, SrcMgr);
-	// DiagnosticsEngine diags{0};
-	// Lexer TheLexer(diags, SrcMgr);
-	// Lexer TheLexer(DiagsEngine, content.value());
-	TheLexer.reset();
-	Token TheToken;
-	while (bool boolValue = TheLexer.lex(TheToken)) {
-		std::printf(" %d ", boolValue);
-		TheToken.print();
-		std::printf("\n");
-		if (TheToken.getKind() == tok::eof)
-			break;
-	}
+	// TextDiagnosticPrinter DiagPrinter;
+	// DiagnosticsEngine     DiagsEngine(&DiagPrinter);
+	// Lexer TheLexer(DiagsEngine, SrcMgr);
+	// TheLexer.reset();
+	// Token TheToken;
+	// while (bool boolValue = TheLexer.lex(TheToken)) {
+	// 	std::printf(" %d ", boolValue);
+	// 	TheToken.print();
+	// 	std::printf("\n");
+	// 	if (TheToken.getKind() == tok::eof)
+	// 		break;
+	// }
 
-	ASTContext ASTCtx;
-	Sema       Actions(TheLexer, ASTCtx);
-	Parser     TheParser(ASTCtx, TheLexer, Actions);
+	// ASTContext ASTCtx;
+	// Sema       Actions(TheLexer, ASTCtx);
+	// Parser     TheParser(ASTCtx, TheLexer, Actions);
 
-	ASTCtx.initialize(TheLexer);
-	Actions.initialize();
+	// ASTCtx.initialize(TheLexer);
+	// Actions.initialize();
 
-	if (Program* P = TheParser.parse()) {
-		P->dump(ASTCtx);
-		llvm::LLVMContext LLVMCtx;
+	// if (Program* P = TheParser.parse()) {
+	// 	P->dump(ASTCtx);
+	// 	llvm::LLVMContext LLVMCtx;
 
-		std::unique_ptr<CodeGenerator> CodeGen = createLLVMCodegen(LLVMCtx, ASTCtx);
-		std::unique_ptr<llvm::Module>  M       = CodeGen->handleProgram(P, file_path);
-	}
+	// 	std::unique_ptr<CodeGenerator> CodeGen = createLLVMCodegen(LLVMCtx, ASTCtx);
+	// 	std::unique_ptr<llvm::Module>  M       = CodeGen->handleProgram(P, file_path);
+	// }
 
 	// chocopy::Lexer Lexer(DiagnosticsEngine(), SourceMgr);
 

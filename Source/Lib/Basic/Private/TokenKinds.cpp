@@ -1,6 +1,10 @@
-#include "chocopy-llvm/Lexer/TokenKinds.h"
+module;
 
 #include <llvm/Support/ErrorHandling.h>
+
+module Basic;
+import :TokenKinds;
+import LLVM;
 
 using namespace chocopy;
 
@@ -8,7 +12,7 @@ static const char *const TokNames[] = {
 #define TOK(ID) #ID,
 #define KEYWORD(ID, STR) #ID,
 #define PUNCTUATOR(ID, STR) #ID,
-#include "chocopy-llvm/Lexer/TokenKinds.def"
+#include "TokenKinds.def"
     nullptr,
 };
 
@@ -24,7 +28,7 @@ const char *tok::getPunctuatorSpelling(TokenKind Kind) {
 #define PUNCTUATOR(ID, STR)                                                    \
   case ID:                                                                     \
     return STR;
-#include "chocopy-llvm/Lexer/TokenKinds.def"
+#include "TokenKinds.def"
   default:
     break;
   }

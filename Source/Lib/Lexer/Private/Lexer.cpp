@@ -1,14 +1,13 @@
-#include "chocopy-llvm/Basic/ASCIICharInfo.h"
-#include "chocopy-llvm/Basic/Diagnostic.h"
-#include "chocopy-llvm/Lexer/Lexer.h"
-
-#include <llvm/ADT/StringMap.h>
-#include <llvm/ADT/StringSwitch.h>
+module;
+#include <cassert>
+module Lexer;
+import Basic;
+import LLVM;
 
 namespace chocopy {
 static llvm::StringMap<tok::TokenKind> KwTable = {
 #define KEYWORD(KW, STR) std::make_pair(StringRef(STR), tok::kw_##KW),
-#include "chocopy-llvm/Lexer/TokenKinds.def"
+#include "TokenKinds.def"
 };
 
 bool isKeyword(StringRef Identifier) { return KwTable.contains(Identifier); }
@@ -168,7 +167,7 @@ bool Lexer::lexImpl(Token &Tok) {
     handleToken(Tok, STR, tok::KIND);                                          \
     return true;                                                               \
   }
-#include "chocopy-llvm/Lexer/TokenKinds.def"
+#include "TokenKinds.def"
 
     Tok.setKind(tok::unknown);
     Tok.setUnknownData(readNext());
