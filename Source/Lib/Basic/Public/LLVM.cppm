@@ -22,12 +22,14 @@ module;
 #include "llvm/IR/LLVMContext.h"
 #include "llvm/IR/Module.h"
 #include "llvm/Support/Allocator.h"
+#include "llvm/Support/FileSystem.h"
 #include "llvm/Support/FormatVariadic.h"
 #include "llvm/Support/JSON.h"
 #include "llvm/Support/SMLoc.h"
 #include "llvm/Support/SaveAndRestore.h"
 #include "llvm/Support/SourceMgr.h"
 #include "llvm/Support/VersionTuple.h"
+
 
 export module LLVM;
 
@@ -67,6 +69,7 @@ using llvm::nulls;
 using llvm::outs;
 using llvm::PointerIntPair;
 using llvm::PointerType;
+using llvm::raw_fd_ostream;
 using llvm::raw_string_ostream;
 using llvm::raw_svector_ostream;
 using llvm::report_fatal_error;
@@ -111,6 +114,10 @@ export using ::operator delete;
 
 export namespace llvm::json {
 using llvm::json::OStream;
+};
+
+export namespace llvm::sys::fs {
+using llvm::sys::fs::OF_Text;
 };
 
 export namespace chocopy {

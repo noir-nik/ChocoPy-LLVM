@@ -55,6 +55,10 @@ int main(int argc, char* argv[]) {
 
 		std::unique_ptr<CodeGenerator> CodeGen = createLLVMCodegen(LLVMCtx, ASTCtx);
 		std::unique_ptr<llvm::Module>  M       = CodeGen->handleProgram(P, file_path);
+		// std::error_code EC;
+        // llvm::raw_fd_ostream OS("a.out", EC, llvm::sys::fs::OF_Text);
+        // OS << *M;
+		M->print(llvm::outs(), nullptr);
 	}
 
 	return 0;
