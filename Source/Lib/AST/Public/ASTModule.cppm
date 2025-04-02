@@ -1,13 +1,13 @@
 export module AST;
 
-import :AST;
-import :ASTContext;
-import :ASTNodeTraverser;
-import :DeclVisitor;
-import :ExprVisitor;
-import :JSONASTDumper;
-import :RecursiveASTVisitor;
-import :StmtVisitor;
-import :Type;
-import :TypeAnnotationVisitor;
-import :TypeVisitor;
+export import :AST;
+export import :ASTContext;
+export import :ASTNodeTraverser;
+export import :DeclVisitor;
+export import :ExprVisitor;
+export import :JSONASTDumper;
+export import :RecursiveASTVisitor;
+export import :StmtVisitor;
+export import :Type;
+export import :TypeAnnotationVisitor;
+export import :TypeVisitor;

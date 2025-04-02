@@ -9,8 +9,9 @@
 import std;
 import FileIOUtils;
 import FileBuffer;
-import Lexer;
 import Basic;
+import AST;
+import Lexer;
 import LLVM;
 
 using namespace chocopy;
@@ -47,7 +48,7 @@ int main(int argc, char* argv[]) {
 	// 		break;
 	// }
 
-	// ASTContext ASTCtx;
+	ASTContext ASTCtx(SrcMgr);
 	// Sema       Actions(TheLexer, ASTCtx);
 	// Parser     TheParser(ASTCtx, TheLexer, Actions);
 

@@ -6,6 +6,7 @@ module AST;
 import :ASTContext;
 import :AST;
 import Basic;
+import std;
 
 namespace chocopy {
 static constexpr const char *OBJECT = "object";
