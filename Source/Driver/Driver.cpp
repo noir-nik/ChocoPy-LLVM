@@ -13,14 +13,14 @@ using namespace chocopy;
 using namespace llvm;
 
 int main(int argc, char* argv[]) {
-	auto file_path = "Test/Demo/demo.py";
+	auto file_path = "./Test/Demo/demo.py";
 
 	std::optional<std::string> content = Utils::ReadFile(file_path);
 	if (!content) {
 		std::printf("Failed to read file\n");
 		return -1;
 	}
-	// std::printf("%s\n", content->c_str());
+	std::printf("%s\n", content->c_str());
 
 	// MemBuffer Buffer(*content);
 	auto Buffer = std::make_unique<FileBuffer>(*content);
@@ -55,10 +55,10 @@ int main(int argc, char* argv[]) {
 
 		std::unique_ptr<CodeGenerator> CodeGen = createLLVMCodegen(LLVMCtx, ASTCtx);
 		std::unique_ptr<llvm::Module>  M       = CodeGen->handleProgram(P, file_path);
-		// std::error_code EC;
-        // llvm::raw_fd_ostream OS("a.out", EC, llvm::sys::fs::OF_Text);
-        // OS << *M;
-		M->print(llvm::outs(), nullptr);
+		// // std::error_code EC;
+        // // llvm::raw_fd_ostream OS("a.out", EC, llvm::sys::fs::OF_Text);
+        // // OS << *M;
+		// M->print(llvm::outs(), nullptr);
 	}
 
 	return 0;

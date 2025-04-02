@@ -127,6 +127,7 @@ public:
 
   operator std::string() const {
     std::string Str;
+	// std::printf("operator std::string\n");
     llvm::raw_string_ostream(Str) << *this;
     return Str;
   }
@@ -134,6 +135,7 @@ public:
   friend InFlightDiagnostic const &operator<<(InFlightDiagnostic &&D,
                                               const Token &Tok) {
     D << std::string(Tok);
+	// std::printf("operator<<%s\n", Tok.getName());
     return D;
   }
 
