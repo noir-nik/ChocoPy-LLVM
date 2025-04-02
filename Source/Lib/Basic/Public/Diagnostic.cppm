@@ -3,10 +3,10 @@ import std;
 import LLVM;
 
 export namespace chocopy {
+using llvm::SmallVector;
 using llvm::SMLoc;
 using llvm::SourceMgr;
 using llvm::StringRef;
-using llvm::SmallVector;
 
 class DiagnosticsEngine;
 class InFlightDiagnostic;
@@ -22,9 +22,9 @@ class Diagnostic {
 public:
   Diagnostic(SourceMgr::DiagKind Kind, SMLoc Loc, const llvm::Twine &Msg)
       : Location(Loc), Kind(Kind) {
-        llvm::SmallVector<char> Str;
-        Message = Msg.toNullTerminatedStringRef(Str);
-      }
+    llvm::SmallVector<char> Str;
+    Message = Msg.toNullTerminatedStringRef(Str);
+  }
 
   const std::string &getMessage() const { return Message; }
   SMLoc getLocation() const { return Location; }
@@ -92,6 +92,17 @@ private:
   SMLoc Location;
   unsigned DiagId;
   unsigned NumArgs = 0;
+};
+
+class TextDiagnosticPrinter final : public DiagnosticConsumer {
+public:
+  TextDiagnosticPrinter(SourceMgr &SrcMgr)
+      : DiagnosticConsumer(), SrcMgr(SrcMgr) {}
+
+  void handleDiagnostic(const Diagnostic &Diag);
+
+private:
+  SourceMgr &SrcMgr;
 };
 
 } // namespace chocopy

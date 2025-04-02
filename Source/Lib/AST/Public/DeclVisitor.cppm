@@ -1,11 +1,13 @@
-#ifndef CHOCOPY_LLVM_AST_DECLVISITOR_H
-#define CHOCOPY_LLVM_AST_DECLVISITOR_H
+module;
 
-#include "chocopy-llvm/AST/AST.h"
+#include <llvm/Support/ErrorHandling.h>
 
-#include <llvm/ADT/STLExtras.h>
+export module AST:DeclVisitor;
+import Basic;
+import :AST;
 
-namespace chocopy {
+// #include <llvm/ADT/STLExtras.h>
+export namespace chocopy {
 namespace declvisitor {
 
 template <template <typename> class Ptr, typename ImplClass,
@@ -21,7 +23,7 @@ public:
 #define DECL(CLASS, KIND)                                                      \
   case Declaration::DeclKind::KIND:                                            \
     DISPATCH(CLASS, CLASS);
-#include "chocopy-llvm/AST/DeclarationNodes.def"
+#include "DeclarationNodes.def"
     }
 
     llvm_unreachable("Unsupported declaration!");
@@ -51,5 +53,3 @@ template <typename Impl>
 class ConstDeclVisitor : public declvisitor::Base<llvm::make_const_ptr, Impl> {
 };
 } // namespace chocopy
-
-#endif // CHOCOPY_LLVM_AST_DECLVISITOR_H

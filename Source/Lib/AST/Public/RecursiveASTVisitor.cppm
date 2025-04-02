@@ -1,10 +1,10 @@
-#ifndef CHOCOPY_LLVM_AST_RECURSIVEASTVISITOR_H
-#define CHOCOPY_LLVM_AST_RECURSIVEASTVISITOR_H
 
-#include "chocopy-llvm/AST/AST.h"
-#include "chocopy-llvm/AST/ASTContext.h"
+export module AST:RecursiveASTVisitor;
+import :AST;
+import :ASTContext;
+import Basic;
 
-namespace chocopy {
+export namespace chocopy {
 
 #define TRY_TO(CALL_EXPR)                                                      \
   do {                                                                         \
@@ -32,7 +32,7 @@ public:
     return true;                                                               \
   }                                                                            \
   bool visit##CLASS(CLASS *D) { return true; }
-#include "chocopy-llvm/AST/DeclarationNodes.def"
+#include "DeclarationNodes.def"
 
   bool walkUpFromTypeAnnotation(TypeAnnotation *T) {
     return getDerived().visitTypeAnnotation(T);
@@ -46,7 +46,7 @@ public:
     return true;                                                               \
   }                                                                            \
   bool visit##CLASS(CLASS *T) { return true; }
-#include "chocopy-llvm/AST/TypeAnnotationNodes.def"
+#include "TypeAnnotationNodes.def"
 
   bool walkUpFromStmt(Stmt *S) { return getDerived().visitStmt(S); }
   bool visitStmt(Stmt *) { return true; }
@@ -58,7 +58,7 @@ public:
     return true;                                                               \
   }                                                                            \
   bool visit##CLASS(CLASS *S) { return true; }
-#include "chocopy-llvm/AST/StmtNodes.def"
+#include "StmtNodes.def"
 
   bool walkUpFromExpr(Expr *E) { return getDerived().visitExpr(E); }
   bool visitExpr(Expr *) { return true; }
@@ -77,7 +77,7 @@ public:
     return true;                                                               \
   }                                                                            \
   bool visit##CLASS(CLASS *E) { return true; }
-#include "chocopy-llvm/AST/ExprNodes.def"
+#include "ExprNodes.def"
 
   bool traverseAST(ASTContext &AST) {
     return getDerived().traverseProgram(AST.getProgram());
@@ -143,7 +143,7 @@ bool RecursiveASTVisitor<Derived>::traverseDeclaration(Declaration *D) {
   case Declaration::DeclKind::KIND:                                            \
     TRY_TO(traverse##CLASS(static_cast<CLASS *>(D)));                          \
     break;
-#include "chocopy-llvm/AST/DeclarationNodes.def"
+#include "DeclarationNodes.def"
   }
   return true;
 }
@@ -155,7 +155,7 @@ bool RecursiveASTVisitor<Derived>::traverseTypeAnnotation(TypeAnnotation *TA) {
   case TypeAnnotation::Kind::KIND:                                             \
     TRY_TO(traverse##CLASS(static_cast<CLASS *>(TA)));                         \
     break;
-#include "chocopy-llvm/AST/TypeAnnotationNodes.def"
+#include "TypeAnnotationNodes.def"
   }
   return true;
 }
@@ -167,7 +167,7 @@ bool RecursiveASTVisitor<Derived>::traverseStmt(Stmt *S) {
   case Stmt::StmtKind::KIND:                                                   \
     TRY_TO(traverse##CLASS(static_cast<CLASS *>(S)));                          \
     break;
-#include "chocopy-llvm/AST/StmtNodes.def"
+#include "StmtNodes.def"
   }
   return true;
 }
@@ -179,7 +179,7 @@ bool RecursiveASTVisitor<Derived>::traverseExpr(Expr *E) {
   case Expr::Kind::KIND:                                                       \
     TRY_TO(traverse##CLASS(static_cast<CLASS *>(E)));                          \
     break;
-#include "chocopy-llvm/AST/ExprNodes.def"
+#include "ExprNodes.def"
   }
   return true;
 }
@@ -191,7 +191,7 @@ bool RecursiveASTVisitor<Derived>::traverseLiteral(Literal *L) {
   case Literal::LiteralType::KIND:                                             \
     TRY_TO(traverse##CLASS(static_cast<CLASS *>(L)));                          \
     break;
-#include "chocopy-llvm/AST/ExprNodes.def"
+#include "ExprNodes.def"
   }
   return true;
 }
@@ -414,4 +414,3 @@ bool RecursiveASTVisitor<Derived>::traverseUnaryExpr(UnaryExpr *U) {
   return true;
 }
 } // namespace chocopy
-#endif // CHOCOPY_LLVM_AST_RECURSIVEASTVISITOR_H

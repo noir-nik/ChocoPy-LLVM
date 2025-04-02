@@ -1,12 +1,12 @@
-#ifndef CHOCOPY_LLVM_AST_AST_H
-#define CHOCOPY_LLVM_AST_AST_H
+module;
 
-#include <llvm/ADT/ArrayRef.h>
-#include <llvm/ADT/StringRef.h>
-#include <llvm/Support/SMLoc.h>
+#include <llvm/Support/ErrorHandling.h>
 
-namespace chocopy {
+export module AST:AST;
+import Basic;
+import std;
 
+export namespace chocopy {
 using llvm::SMRange;
 
 class ASTContext;
@@ -762,7 +762,7 @@ class IntegerLiteral : public Literal {
   friend ASTContext;
 
 public:
-  int64_t getValue() const { return Value; }
+  std::int64_t getValue() const { return Value; }
 
 public:
   static bool classof(const Literal *L) {
@@ -776,11 +776,11 @@ public:
   }
 
 private:
-  IntegerLiteral(SMRange Loc, int64_t Value)
+  IntegerLiteral(SMRange Loc, std::int64_t Value)
       : Literal(Loc, LiteralType::Integer), Value(Value) {}
 
 private:
-  int64_t Value;
+  std::int64_t Value;
 };
 
 class NoneLiteral : public Literal {
@@ -900,4 +900,3 @@ private:
   Expr *Operand;
 };
 } // namespace chocopy
-#endif // CHOCOPY_LLVM_AST_AST_H

@@ -1,13 +1,13 @@
-#ifndef CHOCOPY_LLVM_AST_ASTNODETRAVERSER_H
-#define CHOCOPY_LLVM_AST_ASTNODETRAVERSER_H
+export module AST:ASTNodeTraverser;
+import Basic;
 
-#include "chocopy-llvm/AST/DeclVisitor.h"
-#include "chocopy-llvm/AST/ExprVisitor.h"
-#include "chocopy-llvm/AST/StmtVisitor.h"
-#include "chocopy-llvm/AST/TypeAnnotationVisitor.h"
-#include "chocopy-llvm/AST/TypeVisitor.h"
+import :DeclVisitor;
+import :ExprVisitor;
+import :StmtVisitor;
+import :TypeAnnotationVisitor;
+import :TypeVisitor;
 
-namespace chocopy {
+export namespace chocopy {
 template <typename Derived, typename NodeDelegateType>
 class ASTNodeTraverser : public ConstDeclVisitor<Derived>,
                          public ConstStmtVisitor<Derived>,
@@ -318,4 +318,3 @@ public:
   }
 };
 } // namespace chocopy
-#endif // CHOCOPY_LLVM_AST_ASTNODETRAVERSER_H

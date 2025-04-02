@@ -1,6 +1,6 @@
-#include "chocopy-llvm/AST/Type.h"
-#include "chocopy-llvm/AST/ASTContext.h"
-
+module AST;
+import :Type;
+import :ASTContext;
 namespace chocopy {
 bool ValueType::isInt() const { return this == Ctx.getIntTy(); }
 

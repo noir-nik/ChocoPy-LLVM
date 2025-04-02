@@ -1,11 +1,12 @@
-#ifndef CHOCOPY_LLVM_AST_TYPEANNOTATIONVISITOR_H
-#define CHOCOPY_LLVM_AST_TYPEANNOTATIONVISITOR_H
+module;
 
-#include "chocopy-llvm/AST/AST.h"
+#include <llvm/Support/ErrorHandling.h>
 
-#include <llvm/ADT/STLExtras.h>
+export module AST:TypeAnnotationVisitor;
+import Basic;
+import :AST;
 
-namespace chocopy {
+export namespace chocopy {
 namespace typeannotationvisitor {
 
 template <template <typename> class Ptr, typename ImplClass,
@@ -21,7 +22,7 @@ public:
     switch (T->getKind()) {
 #define TYPE_ANNOTATION(CLASS, KIND)                                                      \
   case TypeAnnotation::Kind::KIND:  DISPATCH(CLASS, CLASS);
-#include "chocopy-llvm/AST/TypeAnnotationNodes.def"
+#include "TypeAnnotationNodes.def"
     }
 
     llvm_unreachable("Unsupported type!");
@@ -50,5 +51,3 @@ template <typename Impl>
 class ConstTypeAnnotationVisitor
     : public typeannotationvisitor::Base<llvm::make_const_ptr, Impl> {};
 } // namespace chocopy
-
-#endif // CHOCOPY_LLVM_AST_TYPEANNOTATIONVISITOR_H

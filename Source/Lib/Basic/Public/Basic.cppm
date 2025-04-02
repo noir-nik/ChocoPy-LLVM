@@ -4,3 +4,4 @@ export import :ASCIICharInfo;
 export import :Diagnostic;
 export import :SymbolTable;
 export import :TokenKinds;
+export import LLVM;

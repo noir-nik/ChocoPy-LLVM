@@ -1,10 +1,13 @@
-#include "chocopy-llvm/AST/ASTContext.h"
-#include "chocopy-llvm/Lexer/Lexer.h"
+module;
 
-#include <llvm/ADT/TypeSwitch.h>
+#include <cassert>
+
+module AST;
+import :ASTContext;
+import :AST;
+import Basic;
 
 namespace chocopy {
-
 static constexpr const char *OBJECT = "object";
 static constexpr const char *INT = "int";
 static constexpr const char *STR = "str";
@@ -18,8 +21,7 @@ static constexpr const char *INPUT = "input";
 static constexpr const char *LEN = "len";
 static constexpr const char *PTHIS = "<this>";
 
-void ASTContext::initialize(Lexer &Lex) {
-  SymbolTable &ST = Lex.getSymbolTable();
+void ASTContext::initialize(SymbolTable &ST) {
   initPredefinedClasses(ST);
   initPredefinedFunctions(ST);
   initPredefinedTypes(ST);
@@ -74,7 +76,7 @@ ClassType *ASTContext::createClassType(SMRange Loc, StringRef ClassName) {
   ClassType *CT = new (Mem) ClassType(Loc);
   CT->NameLength = ClassName.size();
   char *NamePtr = reinterpret_cast<char *>(CT + 1);
-  ::memcpy(NamePtr, ClassName.data(), ClassName.size());
+  std::memcpy(NamePtr, ClassName.data(), ClassName.size());
   NamePtr[ClassName.size()] = 0; // Null terminator
   return CT;
 }
@@ -143,7 +145,7 @@ BooleanLiteral *ASTContext::createBooleanLiteral(SMRange Loc, bool Value) {
   return create<BooleanLiteral>(Loc, Value);
 }
 
-IntegerLiteral *ASTContext::createIntegerLiteral(SMRange Loc, int64_t Value) {
+IntegerLiteral *ASTContext::createIntegerLiteral(SMRange Loc, std::int64_t Value) {
   return create<IntegerLiteral>(Loc, Value);
 }
 

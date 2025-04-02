@@ -1,11 +1,13 @@
-#ifndef CHOCOPY_LLVM_AST_EXPRVISITOR_H
-#define CHOCOPY_LLVM_AST_EXPRVISITOR_H
+module;
 
-#include "chocopy-llvm/AST/AST.h"
+#include <llvm/Support/ErrorHandling.h>
 
-#include <llvm/ADT/STLExtras.h>
+export module AST:ExprVisitor;
+import Basic;
+import :AST;
 
-namespace chocopy {
+// #include <llvm/ADT/STLExtras.h>
+export namespace chocopy {
 namespace exprvisitor {
 
 template <template <typename> class Ptr, typename ImplClass,
@@ -21,7 +23,7 @@ public:
     switch (E->getLiteralType()) {
 #define LITERAL_EXPR(CLASS, KIND)                                              \
   case Literal::LiteralType::KIND:  DISPATCH(CLASS, CLASS);
-#include "chocopy-llvm/AST/ExprNodes.def"
+#include "ExprNodes.def"
     }
   }
 
@@ -29,7 +31,7 @@ public:
     switch (E->getKind()) {
 #define EXPR(CLASS, KIND)                                                      \
   case Expr::Kind::KIND:  DISPATCH(CLASS, CLASS);
-#include "chocopy-llvm/AST/ExprNodes.def"
+#include "ExprNodes.def"
     }
 
     llvm_unreachable("Unsupported expression!");
@@ -69,4 +71,3 @@ class ConstExprVisitor
     : public exprvisitor::Base<llvm::make_const_ptr, Impl, RetTy> {};
 } // namespace chocopy
 
-#endif // CHOCOPY_LLVM_AST_EXPRVISITOR_H

@@ -1,6 +1,11 @@
-#include "chocopy-llvm/AST/AST.h"
-#include "chocopy-llvm/AST/ASTContext.h"
-#include "chocopy-llvm/AST/JSONASTDumper.h"
+module;
+
+#include <llvm/Support/ErrorHandling.h>
+
+module AST;
+import :AST;
+import :ASTContext;
+import :JSONASTDumper;
 
 namespace chocopy {
 void Program::dump(ASTContext &C) const {
