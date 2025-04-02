@@ -1,5 +1,8 @@
-#include "chocopy-llvm/CodeGen/ModuleBuilder.h"
-#include "chocopy-llvm/AST/AST.h"
+module CodeGen;
+import Basic;
+import AST;
+import std;
+import :ModuleBuilder;
 
 namespace chocopy {
 std::unique_ptr<llvm::Module>

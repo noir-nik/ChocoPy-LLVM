@@ -1,33 +1,46 @@
 module;
-#include <llvm/ADT/APInt.h>
-#include <llvm/ADT/GraphTraits.h>
-#include <llvm/ADT/SmallPtrSet.h>
-#include <llvm/ADT/DenseMap.h>
-#include <llvm/ADT/DenseSet.h>
-#include <llvm/ADT/Hashing.h>
-#include <llvm/ADT/IntrusiveRefCntPtr.h>
-#include <llvm/ADT/PointerIntPair.h>
-#include <llvm/ADT/STLExtras.h>
-#include <llvm/ADT/SmallString.h>
-#include <llvm/ADT/StringMap.h>
-#include <llvm/ADT/StringRef.h>
-#include <llvm/ADT/StringSwitch.h>
-#include <llvm/ADT/Twine.h>
-#include <llvm/ADT/TypeSwitch.h>
-#include <llvm/Support/Allocator.h>
-#include <llvm/Support/FormatVariadic.h>
-#include <llvm/Support/JSON.h>
-#include <llvm/Support/SMLoc.h>
-#include <llvm/Support/SaveAndRestore.h>
-#include <llvm/Support/SourceMgr.h>
-#include <llvm/Support/VersionTuple.h>
-
+#include "llvm/ADT/APInt.h"
+#include "llvm/ADT/DenseMap.h"
+#include "llvm/ADT/DenseSet.h"
+#include "llvm/ADT/GraphTraits.h"
+#include "llvm/ADT/Hashing.h"
+#include "llvm/ADT/IntrusiveRefCntPtr.h"
+#include "llvm/ADT/PointerIntPair.h"
+#include "llvm/ADT/STLExtras.h"
+#include "llvm/ADT/SmallPtrSet.h"
+#include "llvm/ADT/SmallString.h"
+#include "llvm/ADT/StringMap.h"
+#include "llvm/ADT/StringRef.h"
+#include "llvm/ADT/StringSwitch.h"
+#include "llvm/ADT/Twine.h"
+#include "llvm/ADT/TypeSwitch.h"
+#include "llvm/IR/BasicBlock.h"
+#include "llvm/IR/Constants.h"
+#include "llvm/IR/DerivedTypes.h"
+#include "llvm/IR/GlobalValue.h"
+#include "llvm/IR/IRBuilder.h"
+#include "llvm/IR/LLVMContext.h"
+#include "llvm/IR/Module.h"
+#include "llvm/Support/Allocator.h"
+#include "llvm/Support/FormatVariadic.h"
+#include "llvm/Support/JSON.h"
+#include "llvm/Support/SMLoc.h"
+#include "llvm/Support/SaveAndRestore.h"
+#include "llvm/Support/SourceMgr.h"
+#include "llvm/Support/VersionTuple.h"
 
 export module LLVM;
 
 // NOLINTBEGIN(misc-unused-using-decls)
 export namespace llvm {
+using llvm::APInt;
+using llvm::ArrayRef;
+using llvm::ArrayType;
+using llvm::BasicBlock;
 using llvm::BumpPtrAllocator;
+using llvm::Constant;
+using llvm::ConstantInt;
+using llvm::ConstantPointerNull;
 using llvm::DenseMap;
 using llvm::DenseMapInfo;
 using llvm::DenseSet;
@@ -35,17 +48,27 @@ using llvm::errs;
 using llvm::find_if;
 using llvm::format;
 using llvm::formatv;
+using llvm::Function;
+using llvm::FunctionType;
+using llvm::GlobalValue;
+using llvm::GlobalVariable;
 using llvm::GraphTraits;
 using llvm::hash_combine;
 using llvm::hash_combine_range;
 using llvm::Inverse;
+using llvm::IRBuilder;
+using llvm::isa;
 using llvm::iterator_range;
+using llvm::LLVMContext;
 using llvm::make_const_ptr;
 using llvm::make_range;
+using llvm::Module;
 using llvm::nulls;
 using llvm::outs;
 using llvm::PointerIntPair;
+using llvm::PointerType;
 using llvm::raw_string_ostream;
+using llvm::raw_svector_ostream;
 using llvm::report_fatal_error;
 using llvm::reverse;
 using llvm::SmallPtrSet;
@@ -58,12 +81,11 @@ using llvm::StringMap;
 using llvm::StringMapEntry;
 using llvm::StringRef;
 using llvm::StringSwitch;
+using llvm::StructType;
 using llvm::Twine;
+using llvm::Type;
 using llvm::TypeSwitch;
-
-using llvm::APInt;
-using llvm::isa;
-using llvm::TypeSwitch;
+using llvm::Value;
 
 using llvm::operator==;
 using llvm::operator!=;
