@@ -24,21 +24,29 @@ chocopy-llvm ./Test/Demo/demo.py
 - Compiler with C++23 support
 - Toolchain with C++23 import std;
 - CMake with Ninja build system
+- LLVM
 
 It is recommended to use clang and libc++
 
 ### Configuration:
-With Custom LLVM build
+With Custom LLVM build specify `-D LLVM_DIR=/path/to/llvm` if it was not found by CMake
 ```bash
-cmake . -B build -G Ninja -D LLVM_DIR=/path/to/llvm
-```
-
-With LLVM headers and dynamic library
-```bash
-cmake . -B build -G Ninja -D LLVM_INCLUDE_DIR=/path/to/llvm/include -D LLVM_LIBRARY_DIR=/path/to/llvm/lib -D LLVM_DYN_LIB=LLVM.a
+cmake . -B build -G Ninja
 ```
 
 ### Build:
 ```bash
 cmake --build build
+```
+
+### Run from the build directory:
+```bash
+./build/bin/chocopy-llvm
+```
+
+### Running tests:
+```bash
+cd Test
+python run_test.py ./Parser/Stage_A
+python run_test.py ./Parser/Stage_B
 ```
