@@ -1,0 +1,438 @@
+{
+  "kind": "Program",
+  "declarations": [
+    {
+      "kind": "VarDef",
+      "location": [
+        1,
+        1,
+        1,
+        10
+      ],
+      "name": {
+        "kind": "Identifier",
+        "location": [
+          1,
+          1,
+          1,
+          2
+        ],
+        "name": "a"
+      },
+      "type": {
+        "kind": "ClassType",
+        "location": [
+          1,
+          3,
+          1,
+          6
+        ],
+        "className": "int"
+      },
+      "value": {
+        "kind": "IntegerLiteral",
+        "location": [
+          1,
+          9,
+          1,
+          10
+        ],
+        "value": 0
+      }
+    },
+    {
+      "kind": "VarDef",
+      "location": [
+        2,
+        1,
+        2,
+        11
+      ],
+      "name": {
+        "kind": "Identifier",
+        "location": [
+          2,
+          1,
+          2,
+          2
+        ],
+        "name": "c"
+      },
+      "type": {
+        "kind": "ClassType",
+        "location": [
+          2,
+          3,
+          2,
+          6
+        ],
+        "className": "int"
+      },
+      "value": {
+        "kind": "IntegerLiteral",
+        "location": [
+          2,
+          9,
+          2,
+          11
+        ],
+        "value": 11
+      }
+    }
+  ],
+  "statements": [
+    {
+      "kind": "AssignStmt",
+      "location": [
+        4,
+        1,
+        4,
+        18
+      ],
+      "targets": [
+        {
+          "kind": "DeclRef",
+          "location": [
+            4,
+            1,
+            4,
+            2
+          ],
+          "name": "c"
+        }
+      ],
+      "value": {
+        "left": {
+          "left": {
+            "kind": "IntegerLiteral",
+            "location": [
+              4,
+              5,
+              4,
+              8
+            ],
+            "value": 123
+          },
+          "kind": "BinaryExpr",
+          "location": [
+            4,
+            5,
+            4,
+            12
+          ],
+          "operator": "-",
+          "right": {
+            "kind": "IntegerLiteral",
+            "location": [
+              4,
+              11,
+              4,
+              12
+            ],
+            "value": 3
+          }
+        },
+        "kind": "BinaryExpr",
+        "location": [
+          4,
+          5,
+          4,
+          18
+        ],
+        "operator": "+",
+        "right": {
+          "kind": "IntegerLiteral",
+          "location": [
+            4,
+            15,
+            4,
+            18
+          ],
+          "value": 100
+        }
+      }
+    },
+    {
+      "kind": "ExprStmt",
+      "location": [
+        5,
+        1,
+        5,
+        9
+      ],
+      "expr": {
+        "kind": "CallExpr",
+        "location": [
+          5,
+          1,
+          5,
+          9
+        ],
+        "function": {
+          "kind": "DeclRef",
+          "location": [
+            5,
+            1,
+            5,
+            6
+          ],
+          "name": "print"
+        },
+        "args": [
+          {
+            "kind": "DeclRef",
+            "location": [
+              5,
+              7,
+              5,
+              8
+            ],
+            "name": "c"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "AssignStmt",
+      "location": [
+        7,
+        1,
+        7,
+        8
+      ],
+      "targets": [
+        {
+          "kind": "DeclRef",
+          "location": [
+            7,
+            1,
+            7,
+            2
+          ],
+          "name": "a"
+        }
+      ],
+      "value": {
+        "kind": "IntegerLiteral",
+        "location": [
+          7,
+          5,
+          7,
+          8
+        ],
+        "value": 123
+      }
+    },
+    {
+      "kind": "ExprStmt",
+      "location": [
+        8,
+        1,
+        8,
+        9
+      ],
+      "expr": {
+        "kind": "CallExpr",
+        "location": [
+          8,
+          1,
+          8,
+          9
+        ],
+        "function": {
+          "kind": "DeclRef",
+          "location": [
+            8,
+            1,
+            8,
+            6
+          ],
+          "name": "print"
+        },
+        "args": [
+          {
+            "kind": "DeclRef",
+            "location": [
+              8,
+              7,
+              8,
+              8
+            ],
+            "name": "a"
+          }
+        ]
+      }
+    },
+    {
+      "kind": "AssignStmt",
+      "location": [
+        10,
+        1,
+        10,
+        29
+      ],
+      "targets": [
+        {
+          "kind": "DeclRef",
+          "location": [
+            10,
+            1,
+            10,
+            2
+          ],
+          "name": "a"
+        }
+      ],
+      "value": {
+        "left": {
+          "left": {
+            "left": {
+              "kind": "DeclRef",
+              "location": [
+                10,
+                5,
+                10,
+                6
+              ],
+              "name": "a"
+            },
+            "kind": "BinaryExpr",
+            "location": [
+              10,
+              5,
+              10,
+              10
+            ],
+            "operator": "+",
+            "right": {
+              "kind": "IntegerLiteral",
+              "location": [
+                10,
+                9,
+                10,
+                10
+              ],
+              "value": 2
+            }
+          },
+          "kind": "BinaryExpr",
+          "location": [
+            10,
+            5,
+            10,
+            24
+          ],
+          "operator": "+",
+          "right": {
+            "left": {
+              "left": {
+                "kind": "DeclRef",
+                "location": [
+                  10,
+                  13,
+                  10,
+                  14
+                ],
+                "name": "a"
+              },
+              "kind": "BinaryExpr",
+              "location": [
+                10,
+                13,
+                10,
+                18
+              ],
+              "operator": "*",
+              "right": {
+                "kind": "DeclRef",
+                "location": [
+                  10,
+                  17,
+                  10,
+                  18
+                ],
+                "name": "a"
+              }
+            },
+            "kind": "BinaryExpr",
+            "location": [
+              10,
+              13,
+              10,
+              24
+            ],
+            "operator": "*",
+            "right": {
+              "kind": "IntegerLiteral",
+              "location": [
+                10,
+                21,
+                10,
+                24
+              ],
+              "value": 100
+            }
+          }
+        },
+        "kind": "BinaryExpr",
+        "location": [
+          10,
+          5,
+          10,
+          29
+        ],
+        "operator": "-",
+        "right": {
+          "kind": "IntegerLiteral",
+          "location": [
+            10,
+            27,
+            10,
+            29
+          ],
+          "value": 50
+        }
+      }
+    },
+    {
+      "kind": "ExprStmt",
+      "location": [
+        11,
+        1,
+        11,
+        9
+      ],
+      "expr": {
+        "kind": "CallExpr",
+        "location": [
+          11,
+          1,
+          11,
+          9
+        ],
+        "function": {
+          "kind": "DeclRef",
+          "location": [
+            11,
+            1,
+            11,
+            6
+          ],
+          "name": "print"
+        },
+        "args": [
+          {
+            "kind": "DeclRef",
+            "location": [
+              11,
+              7,
+              11,
+              8
+            ],
+            "name": "a"
+          }
+        ]
+      }
+    }
+  ]
+}

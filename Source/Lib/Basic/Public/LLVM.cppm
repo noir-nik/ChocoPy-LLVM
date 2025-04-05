@@ -18,6 +18,7 @@ module;
 #include "llvm/IR/Constants.h"
 #include "llvm/IR/DerivedTypes.h"
 #include "llvm/IR/GlobalValue.h"
+#include "llvm/Support/MemoryBuffer.h"
 #include "llvm/IR/IRBuilder.h"
 #include "llvm/IR/LLVMContext.h"
 #include "llvm/IR/Module.h"
@@ -83,6 +84,7 @@ using llvm::SourceMgr;
 using llvm::StringMap;
 using llvm::StringMapEntry;
 using llvm::StringRef;
+using llvm::MemoryBuffer;
 using llvm::StringSwitch;
 using llvm::StructType;
 using llvm::Twine;
