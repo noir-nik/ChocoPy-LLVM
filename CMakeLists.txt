@@ -48,6 +48,20 @@ link_libraries(${llvm_libs})
 	
 else() # LLVM_FOUND
 message(STATUS "LLVM package was not found")
+if(NOT DEFINED LLVM_INCLUDE_DIR OR NOT DEFINED LLVM_LIBRARY_DIR OR NOT DEFINED LLVM_DYN_LIB)
+message(FATAL_ERROR
+  "Specify either of these:
+  - LLVM_DIR - path to the LLVM build directory
+  
+  Or:
+  
+  - LLVM_INCLUDE_DIR - path to the include directory with llvm headers
+  - LLVM_LIBRARY_DIR - path to the lib directory with llvm libraries
+  - LLVM_DYN_LIB     - file name of LLVM dynamic library in llvm lib directory (usually LLVM.a or LLVM-20.a)"
+)
+endif(
+  
+)
 
 if(NOT DEFINED LLVM_INCLUDE_DIR)
 message(FATAL_ERROR "LLVM_INCLUDE_DIR is not set. Please specify the path to the LLVM include directory.
@@ -65,18 +79,18 @@ else() # LLVM_LIBRARY_DIR
 message(STATUS "LLVM_LIBRARY_DIR: ${LLVM_LIBRARY_DIR}")
 endif() # LLVM_LIBRARY_DIR
 
-if(NOT DEFINED LLVM_DLL)
-message(FATAL_ERROR "LLVM_DLL is not set. Please specify the path to the LLVM DLL.
+if(NOT DEFINED LLVM_DYN_LIB)
+message(FATAL_ERROR "LLVM_DYN_LIB is not set. Please specify the path to the LLVM DLL.
   Example (linux): -DLLVM_DLL=\"LLVM\"
   Example (win):   -DLLVM_DLL=\"LLVM-20\""
 )
-else() # LLVM_DLL
-message(STATUS "LLVM_DLL: ${LLVM_DLL}")
-endif() # LLVM_DLL
+else() # LLVM_DYN_LIB
+message(STATUS "LLVM_DYN_LIB: ${LLVM_DYN_LIB}")
+endif() # LLVM_DYN_LIB
 
 link_directories(${LLVM_LIBRARY_DIR})
 include_directories(${LLVM_INCLUDE_DIR})
-link_libraries(${LLVM_DLL})
+link_libraries(${LLVM_DYN_LIB})
 
 endif() # LLVM_FOUND
 
