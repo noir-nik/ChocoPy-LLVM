@@ -7,11 +7,7 @@ project(chocopy-llvm LANGUAGES C CXX)
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_MODULE_STD 1)
 
-# Include directories
-set(INCLUDE_DIRS
-	"include"
-)
-include_directories(${INCLUDE_DIRS})
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 
 # LLVM
 find_package(LLVM QUIET)
@@ -49,19 +45,26 @@ link_libraries(${llvm_libs})
 else() # LLVM_FOUND
 message(STATUS "LLVM package was not found")
 if(NOT DEFINED LLVM_INCLUDE_DIR OR NOT DEFINED LLVM_LIBRARY_DIR OR NOT DEFINED LLVM_DYN_LIB)
+if (NOT DEFINED LLVM_INCLUDE_DIR)
+message( STATUS "LLVM_INCLUDE_DIR is not set. Please specify the path to the LLVM include directory.)")
+endif()
+if (NOT DEFINED LLVM_LIBRARY_DIR)
+message( STATUS "LLVM_LIBRARY_DIR is not set. Please specify the path to the LLVM lib directory.)")
+endif()
+if (NOT DEFINED LLVM_DYN_LIB)
+message( STATUS "LLVM_DYN_LIB is not set. Please specify the file name of LLVM dynamic library.)")
+endif()
 message(FATAL_ERROR
   "Specify either of these:
   - LLVM_DIR - path to the LLVM build directory
-  
+
   Or:
   
   - LLVM_INCLUDE_DIR - path to the include directory with llvm headers
   - LLVM_LIBRARY_DIR - path to the lib directory with llvm libraries
   - LLVM_DYN_LIB     - file name of LLVM dynamic library in llvm lib directory (usually LLVM.a or LLVM-20.a)"
 )
-endif(
-  
-)
+endif()
 
 if(NOT DEFINED LLVM_INCLUDE_DIR)
 message(FATAL_ERROR "LLVM_INCLUDE_DIR is not set. Please specify the path to the LLVM include directory.
