@@ -12,54 +12,82 @@ import LLVM;
 using namespace chocopy;
 using namespace llvm;
 
-int main(int argc, char* argv[]) {
-	auto file_path = "./Test/Demo/demo.py";
+void dumpTokens(Lexer &TheLexer) {
+  Token TheToken;
+  while (bool BoolValue = TheLexer.lex(TheToken)) {
+    TheToken.print();
+    std::printf("\n");
+    if (TheToken.getKind() == tok::eof)
+      break;
+  }
+}
 
-	std::optional<std::string> content = Utils::ReadFile(file_path);
-	if (!content) {
-		std::printf("Failed to read file\n");
-		return -1;
-	}
-	std::printf("%s\n", content->c_str());
+int main(int argc, char *argv[]) {
+  constexpr char const *demo_path = "./Test/Demo/demo.py";
 
-	// MemBuffer Buffer(*content);
-	auto Buffer = std::make_unique<FileBuffer>(*content);
+  bool DumpTokensOpt = false;
+  bool DumpASTOpt = false;
 
-	SourceMgr SrcMgr;
-	SrcMgr.AddNewSourceBuffer(std::move(Buffer), llvm::SMLoc());
+  for (std::string_view arg : std::span(argv + 1, argc - 1)) {
+    if (arg == "-t") {
+      DumpTokensOpt = true;
+    } else if (arg == "-ast-dump") {
+      DumpASTOpt = true;
+    }
+  }
 
-	TextDiagnosticPrinter DiagPrinter(SrcMgr);
-	DiagnosticsEngine     DiagsEngine(&DiagPrinter);
+  if (argc == 1) {
+    std::printf("No input file\n");
+    return -1;
+  }
+  char const *file_path = argv[1];
 
-	Lexer TheLexer(DiagsEngine, SrcMgr);
-	TheLexer.reset();
+  std::optional<std::string> content = Utils::ReadFile(file_path);
+  if (!content) {
+    std::printf("Failed to read file\n");
+    return -1;
+  }
 
-	Token TheToken;
-	while (bool BoolValue = TheLexer.lex(TheToken)) {
-		TheToken.print();
-		std::printf("\n");
-		if (TheToken.getKind() == tok::eof)
-			break;
-	}
+  // std::printf("%s\n", content->c_str());
 
-	ASTContext ASTCtx(SrcMgr);
-	Sema       Actions(DiagsEngine, ASTCtx);
-	Parser     TheParser(ASTCtx, TheLexer, Actions);
+  auto Buffer = std::make_unique<FileBuffer>(*content);
 
-	ASTCtx.initialize(TheLexer.getSymbolTable());
-	Actions.initialize();
+  SourceMgr SrcMgr;
+  SrcMgr.AddNewSourceBuffer(std::move(Buffer), llvm::SMLoc());
 
-	if (Program* P = TheParser.parse()) {
-		P->dump(ASTCtx);
-		llvm::LLVMContext LLVMCtx;
+  TextDiagnosticPrinter DiagPrinter(SrcMgr);
+  DiagnosticsEngine DiagsEngine(&DiagPrinter);
 
-		std::unique_ptr<CodeGenerator> CodeGen = createLLVMCodegen(LLVMCtx, ASTCtx);
-		std::unique_ptr<llvm::Module>  M       = CodeGen->handleProgram(P, file_path);
-		// // std::error_code EC;
-        // // llvm::raw_fd_ostream OS("a.out", EC, llvm::sys::fs::OF_Text);
-        // // OS << *M;
-		// M->print(llvm::outs(), nullptr);
-	}
+  Lexer TheLexer(DiagsEngine, SrcMgr);
+  TheLexer.reset();
 
-	return 0;
+  if (DumpTokensOpt) {
+    dumpTokens(TheLexer);
+    return 0;
+  }
+  // TheLexer.reset();
+
+  ASTContext ASTCtx(SrcMgr);
+  Sema Actions(DiagsEngine, ASTCtx);
+  Parser TheParser(ASTCtx, TheLexer, Actions);
+
+  ASTCtx.initialize(TheLexer.getSymbolTable());
+  Actions.initialize();
+
+  if (Program *P = TheParser.parse()) {
+    if (DumpASTOpt) {
+      P->dump(ASTCtx);
+    }
+    // llvm::LLVMContext LLVMCtx;
+
+    // std::unique_ptr<CodeGenerator> CodeGen = createLLVMCodegen(LLVMCtx,
+    // ASTCtx); std::unique_ptr<llvm::Module>  M       =
+    // CodeGen->handleProgram(P, file_path);
+    // // std::error_code EC;
+    // // llvm::raw_fd_ostream OS("a.out", EC, llvm::sys::fs::OF_Text);
+    // // OS << *M;
+    // M->print(llvm::outs(), nullptr);
+  }
+
+  return 0;
 }

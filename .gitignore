@@ -44,3 +44,15 @@ logs/*
 # Log files
 *.ini
 *.log
+
+# Archives
+*.zip
+*.rar
+*.7z
+*.tar.gz
+*.tgz
+*.tar.xz
+*.tar
+*.tar.bz2
+
+Test/Parser/**/*.json

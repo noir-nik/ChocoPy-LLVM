@@ -50,4 +50,6 @@ DIAG(err_tc_assign, Error, "Expected type `{0}`; got type `{1}`")
 
 DIAG(err_tc_binary, Error, "Cannot apply operator `{0}` on types `{1}` and `{2}`")
 
+DIAG(err_invalid_assignment_target, Error, "Invalid assignment target: {0}")
+
 #undef DIAG

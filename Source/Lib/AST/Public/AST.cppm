@@ -338,6 +338,7 @@ public:
     ExprStmt,
     ForStmt,
     IfStmt,
+    // PassStmt,
     ReturnStmt,
     WhileStmt
   };
@@ -358,6 +359,21 @@ protected:
   StmtKind Kind;
   SMRange Loc;
 };
+
+/** Pass statement.*/
+/* 
+class PassStmt : public Stmt {
+  friend ASTContext;
+
+public:
+  static bool classof(const Stmt *S) {
+    return S->getKind() == StmtKind::PassStmt;
+  }
+
+private:
+  PassStmt(SMRange Loc) : Stmt(Loc, StmtKind::PassStmt) {}
+};
+ */
 
 /** Single and multiple assignments. */
 class AssignStmt : public Stmt {
