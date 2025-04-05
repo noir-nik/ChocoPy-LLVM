@@ -34,6 +34,11 @@ def main():
 
     executable = args.executable
 
+    if not os.path.isfile((executable)):
+        print(f"ChocoPy executable {executable} not found, specify correct path to chocopy-llvm")
+        parser.print_usage()
+        sys.exit(1)
+
     # Collect test files
     if not TEST_FILES:
         print("No test files specified.")
@@ -47,20 +52,24 @@ def main():
         else:
             all_files.append(file)
 
-    if not args.dump_only:
-        print(f"Running {len(all_files)} test" + ("s" if len(all_files) > 1 else ""))
-    # print(all_files)
-
-    test_count = len(all_files)
-    passed = 0
 
     for file in all_files:
         ast_file = file + ".ast"
         if not os.path.isfile(file) or not os.path.isfile(ast_file):
-            test_count -= 1
+            all_files.remove(file)
             if (args.verbose > 1):
                 print(f"No ast file for {file}")
             continue
+    
+    test_count = len(all_files)
+    passed = 0
+    
+
+    if not args.dump_only:
+        print(f"Running {len(all_files)} test" + ("s" if len(all_files) > 1 else ""))
+
+    for file in all_files:
+        ast_file = file + ".ast"
         
         result = subprocess.run([executable, file, "-ast-dump"],
                                 stdout=subprocess.PIPE,
