@@ -465,9 +465,12 @@ Stmt *Parser::parseSimpleStmt() {
 }
 
 // if_stmt ::= if expr : block [elif expr : block]* [else : block]?
-Stmt *Parser::parseIfStmt(SMLoc StartLoc) {
-  if (!StartLoc.isValid()) {
-    StartLoc = Tok.getLocation().Start;
+Stmt *Parser::parseIfStmt(bool IsElif) {
+  SMLoc StartLoc = Tok.getLocation().Start;
+  if (IsElif) {
+    if (!expectAndConsume(tok::kw_elif))
+      return nullptr;
+  } else {
     if (!expectAndConsume(tok::kw_if))
       return nullptr;
   }
@@ -489,10 +492,8 @@ Stmt *Parser::parseIfStmt(SMLoc StartLoc) {
 
   // Parse optional elif/else clauses
   if (Tok.is(tok::kw_elif)) {
-    SMLoc ElifLoc = Tok.getLocation().Start;
-    consumeToken();
     // Treat elif as a nested if statement in the else branch
-    Stmt *ElifStmt = parseIfStmt(ElifLoc);
+    Stmt *ElifStmt = parseIfStmt(true);
     if (!ElifStmt)
       return nullptr;
 

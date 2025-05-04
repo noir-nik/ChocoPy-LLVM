@@ -41,8 +41,8 @@ private:
   NonLocalDecl *parseNonlocalDecl();
   Stmt *parseStmt();
   Stmt *parseSimpleStmt();
-  // Provide StartLoc to skip if token in case of elif
-  Stmt *parseIfStmt(SMLoc StartLoc = SMLoc());
+  // Parsw if or elif and return if statement
+  Stmt *parseIfStmt(bool IsElif = false);
   Stmt *parseWhileStmt();
   Stmt *parseForStmt();
   bool parseBlock(StmtList &Statements);
