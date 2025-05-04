@@ -62,7 +62,7 @@ private:
   Expr *parseIndexExpr(Expr *Left);  // index_expr ::= cexpr [ expr ]
   Expr *parseFnCall();
 
-  bool ParseExprList(ExprList &Args, tok::TokenKind StopToken);
+  bool parseExprList(ExprList &Args, tok::TokenKind StopToken);
 
   Expr *parsePrimaryExpr();
   Expr *parseTarget();
@@ -75,10 +75,10 @@ private:
   TypeAnnotation *parseType();
   VarDef *parseVarDef();
   Literal *parseLiteral();
-  bool IsVarDef(Token &Tok);
+  bool isVarDef(Token &Tok);
 
   ParamDeclList parseFuncArgList();
-  bool IsNotPassStmt(Stmt *S);
+  bool isNotPassStmt(Stmt *S);
 
 private:
   DiagnosticsEngine &Diags;
