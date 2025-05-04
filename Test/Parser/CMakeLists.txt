@@ -32,3 +32,9 @@ add_lit_testsuite(check-chpy-parser-Stage_B "Running the Chocopy Stage_B parser 
 add_lit_testsuite(check-chpy-parser-bad "Running the Chocopy bad parser tests"
   ${CMAKE_CURRENT_BINARY_DIR}/Bad
 )
+
+add_custom_target(check-chpy-parser)
+add_dependencies(check-chpy-parser
+  check-chpy-parser-bad
+  check-chpy-parser-stage1
+  check-chpy-parser-stage2)
