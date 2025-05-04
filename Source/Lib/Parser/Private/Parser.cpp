@@ -32,9 +32,9 @@ struct Parser::ParseScope {
 
 constexpr char const *NonTypeStr = "<None>";
 
-bool Parser::IsNotPassStmt(Stmt *S) { return S != &PassStmt; }
+bool Parser::isNotPassStmt(Stmt *S) { return S != &PassStmt; }
 
-bool Parser::IsVarDef(Token &Tok) {
+bool Parser::isVarDef(Token &Tok) {
   return Tok.isOneOf(tok::identifier, tok::idstring) &&
          TheLexer.LookAhead(0).is(tok::colon);
 };
@@ -112,7 +112,7 @@ Program *Parser::parseProgram() {
   // Parse statements
   while (!Tok.is(tok::eof)) {
     if (Stmt *S = parseStmt()) {
-      if (IsNotPassStmt(S)) {
+      if (isNotPassStmt(S)) {
         Statements.push_back(S);
       }
     } else {
@@ -126,7 +126,7 @@ Program *Parser::parseProgram() {
 // declaration ::= [var def | func def | class def]
 Declaration *Parser::parseDeclaration() {
   // Parse variable definition
-  if (IsVarDef(Tok)) {
+  if (isVarDef(Tok)) {
     return parseVarDef();
   }
 
@@ -206,7 +206,7 @@ bool Parser::parseClassBody(DeclList &Members) {
 
   // Parse var_def and func_def
   while (!Tok.is(tok::DEDENT)) {
-    if (IsVarDef(Tok)) {
+    if (isVarDef(Tok)) {
       if (VarDef *V = parseVarDef()) {
         Members.push_back(V);
         FoundMember = true;
@@ -331,7 +331,7 @@ bool Parser::parseFuncBody(DeclList &Declarations, StmtList &Statements) {
     } else if (NonLocalDecl *N = parseNonlocalDecl()) {
       Declarations.push_back(N);
     }
-    if (IsVarDef(Tok)) {
+    if (isVarDef(Tok)) {
       if (VarDef *V = parseVarDef()) {
         Declarations.push_back(V);
       }
@@ -344,7 +344,7 @@ bool Parser::parseFuncBody(DeclList &Declarations, StmtList &Statements) {
 
   // Parse statements (at least one)
   if (Stmt *S = parseStmt()) {
-    if (IsNotPassStmt(S)) {
+    if (isNotPassStmt(S)) {
       Statements.push_back(S);
     }
   } else {
@@ -354,7 +354,7 @@ bool Parser::parseFuncBody(DeclList &Declarations, StmtList &Statements) {
   // Parse remaining statements
   while (!Tok.is(tok::DEDENT)) {
     if (Stmt *S = parseStmt()) {
-      if (IsNotPassStmt(S)) {
+      if (isNotPassStmt(S)) {
         Statements.push_back(S);
       }
     } else {
@@ -593,7 +593,7 @@ bool Parser::parseBlock(StmtList &Statements) {
 
   // Parse at least one statement
   if (Stmt *S = parseStmt()) {
-    if (IsNotPassStmt(S)) {
+    if (isNotPassStmt(S)) {
       Statements.push_back(S);
     }
   } else {
@@ -603,7 +603,7 @@ bool Parser::parseBlock(StmtList &Statements) {
   // Parse remaining statements
   while (!Tok.is(tok::DEDENT)) {
     if (Stmt *S = parseStmt()) {
-      if (IsNotPassStmt(S)) {
+      if (isNotPassStmt(S)) {
         Statements.push_back(S);
       }
     } else {
@@ -815,7 +815,7 @@ Expr *Parser::parseCExpr() {
     } else if (Tok.is(tok::l_paren)) {
       consumeToken();
       ExprList Args;
-      if (!ParseExprList(Args, tok::r_paren)) {
+      if (!parseExprList(Args, tok::r_paren)) {
         return nullptr;
       }
 
@@ -829,7 +829,7 @@ Expr *Parser::parseCExpr() {
 }
 
 // expr_list ::= [ expr [, expr ]* ]* 'StopToken'
-bool Parser::ParseExprList(ExprList &Args, tok::TokenKind StopToken) {
+bool Parser::parseExprList(ExprList &Args, tok::TokenKind StopToken) {
   if (Tok.isNot(StopToken)) {
     do {
       // @todo(sema): type check
@@ -861,7 +861,7 @@ Expr *Parser::parseMemberExpr(Expr *Object) {
   if (Tok.is(tok::l_paren)) {
     consumeToken();
     ExprList Args;
-    if (!ParseExprList(Args, tok::r_paren)) {
+    if (!parseExprList(Args, tok::r_paren)) {
       return nullptr;
     }
 
@@ -914,7 +914,7 @@ Expr *Parser::parsePrimaryExpr() {
   case tok::l_square: {
     consumeToken();
     ExprList Elements;
-    if (!ParseExprList(Elements, tok::r_square)) {
+    if (!parseExprList(Elements, tok::r_square)) {
       return nullptr;
     };
 
