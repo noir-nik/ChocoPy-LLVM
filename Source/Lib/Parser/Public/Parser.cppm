@@ -59,7 +59,7 @@ private:
   Expr *parseCExprPrecedence8(); // expr8 ::= -cexpr8 | cexpr
 
   Expr *parseMemberExpr(Expr *Object); // member or method call
-  Expr *parseIndexExpr(Expr *Left);  // index_expr ::= cexpr [ expr ]
+  Expr *parseIndexExpr(Expr *Left);    // index_expr ::= cexpr [ expr ]
   Expr *parseFnCall();
 
   bool parseExprList(ExprList &Args, tok::TokenKind StopToken);
@@ -76,6 +76,7 @@ private:
   VarDef *parseVarDef();
   Literal *parseLiteral();
   bool isVarDef(Token &Tok);
+  bool isDeclaration(Token &Tok);
 
   ParamDeclList parseFuncArgList();
   bool isNotPassStmt(Stmt *S);
