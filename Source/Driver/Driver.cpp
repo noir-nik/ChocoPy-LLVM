@@ -1,3 +1,5 @@
+#include <cstdio>
+
 import std;
 import FileIOUtils;
 import FileBuffer;
@@ -27,12 +29,21 @@ int main(int argc, char *argv[]) {
 
   bool DumpTokensOpt = false;
   bool DumpASTOpt = false;
+  bool RunSemaOpt = false;
+  bool EmitLLVMOpt = false;
+  bool CfgDumpOpt = false;
 
   for (std::string_view arg : std::span(argv + 1, argc - 1)) {
     if (arg == "-t") {
       DumpTokensOpt = true;
     } else if (arg == "-ast-dump") {
       DumpASTOpt = true;
+    } else if (arg == "-run-sema") {
+      RunSemaOpt = true;
+    } else if (arg == "-emit-llvm") {
+      EmitLLVMOpt = true;
+    } else if (arg == "-cfg-dump") {
+      CfgDumpOpt = true;
     }
   }
 
@@ -75,9 +86,19 @@ int main(int argc, char *argv[]) {
   Actions.initialize();
 
   if (Program *P = TheParser.parse()) {
+    auto ErrNum = DiagsEngine.getNumErrors();
+    if (ErrNum > 0) {
+      std::fprintf(stderr, "%u error%s generated!\n", ErrNum,
+                   ErrNum == 1 ? "" : "s");
+    }
+
     if (DumpASTOpt) {
       P->dump(ASTCtx);
     }
+
+    if (RunSemaOpt || EmitLLVMOpt)
+      Actions.run();
+
     // llvm::LLVMContext LLVMCtx;
 
     // std::unique_ptr<CodeGenerator> CodeGen = createLLVMCodegen(LLVMCtx,

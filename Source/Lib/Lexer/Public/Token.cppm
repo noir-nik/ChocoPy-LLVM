@@ -1,10 +1,7 @@
 
 module;
 
-#include <llvm/ADT/StringRef.h>
-#include <llvm/Support/FormatVariadic.h>
-#include <llvm/Support/SMLoc.h>
-#include <llvm/Support/raw_ostream.h>
+#include <cassert>
 
 export module Lexer:Token;
 import std;
@@ -125,18 +122,16 @@ public:
     return static_cast<char *>(Ptr);
   }
 
+  //   operator StringRef() const { return StringRef(getName()); }
   operator std::string() const {
     std::string Str;
-	// std::printf("operator std::string\n");
     llvm::raw_string_ostream(Str) << *this;
     return Str;
   }
 
-  friend InFlightDiagnostic const &operator<<(InFlightDiagnostic &&D,
-                                              const Token &Tok) {
-    D << std::string(Tok);
-	// std::printf("operator<<%s\n", Tok.getName());
-    return D;
+  friend auto operator<<(InFlightDiagnostic &&D, const Token &Tok) -> auto && {
+    // return std::forward<InFlightDiagnostic>(D) << StringRef(Tok);
+    return std::forward<InFlightDiagnostic>(D) << std::string(Tok); // Invoke formatting
   }
 
   friend raw_ostream &operator<<(raw_ostream &Stream, const Token &Tok) {
