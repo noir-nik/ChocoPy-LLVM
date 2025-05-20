@@ -93,6 +93,10 @@ const Token &Parser::getLookAheadToken(int N) {
   return TheLexer.LookAhead(N - 1);
 }
 
+bool Parser::isDeclaration(Token &Tok) {
+  return isVarDef(Tok) || Tok.is(tok::kw_def) || Tok.is(tok::kw_class);
+}
+
 // program ::= declaration* stmt*
 Program *Parser::parseProgram() {
   DeclList Declarations;
@@ -101,11 +105,11 @@ Program *Parser::parseProgram() {
   consumeToken();
 
   // Parse declarations
-  while (!Tok.is(tok::eof)) {
+  while (isDeclaration(Tok)) {
     if (Declaration *D = parseDeclaration()) {
       Declarations.push_back(D);
     } else {
-      break;
+      skipToNextLine();
     }
   }
 
@@ -116,7 +120,7 @@ Program *Parser::parseProgram() {
         Statements.push_back(S);
       }
     } else {
-      break;
+      skipToNextLine();
     }
   }
 
