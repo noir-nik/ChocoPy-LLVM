@@ -24,8 +24,8 @@ void dumpTokens(Lexer &TheLexer) {
   }
 }
 
-int main(int argc, char *argv[]) {
-  constexpr char const *demo_path = "./Test/Demo/demo.py";
+int main(int Argc, char *Argv[]) {
+  constexpr char const *DemoPath = "./Test/Demo/demo.py";
 
   bool DumpTokensOpt = false;
   bool DumpASTOpt = false;
@@ -33,35 +33,35 @@ int main(int argc, char *argv[]) {
   bool EmitLLVMOpt = false;
   bool CfgDumpOpt = false;
 
-  for (std::string_view arg : std::span(argv + 1, argc - 1)) {
-    if (arg == "-t") {
+  for (std::string_view Arg : std::span(Argv + 1, Argc - 1)) {
+    if (Arg == "-t") {
       DumpTokensOpt = true;
-    } else if (arg == "-ast-dump") {
+    } else if (Arg == "-ast-dump") {
       DumpASTOpt = true;
-    } else if (arg == "-run-sema") {
+    } else if (Arg == "-run-sema") {
       RunSemaOpt = true;
-    } else if (arg == "-emit-llvm") {
+    } else if (Arg == "-emit-llvm") {
       EmitLLVMOpt = true;
-    } else if (arg == "-cfg-dump") {
+    } else if (Arg == "-cfg-dump") {
       CfgDumpOpt = true;
     }
   }
 
-  if (argc == 1) {
+  if (Argc == 1) {
     std::printf("No input file\n");
     return -1;
   }
-  char const *file_path = argv[1];
+  char const *FilePath = Argv[1];
 
-  std::optional<std::string> content = Utils::ReadFile(file_path);
-  if (!content) {
+  std::optional<std::string> Content = Utils::ReadFile(FilePath);
+  if (!Content) {
     std::printf("Failed to read file\n");
     return -1;
   }
 
   // std::printf("%s\n", content->c_str());
 
-  auto Buffer = std::make_unique<FileBuffer>(*content);
+  auto Buffer = std::make_unique<FileBuffer>(*Content);
 
   SourceMgr SrcMgr;
   SrcMgr.AddNewSourceBuffer(std::move(Buffer), llvm::SMLoc());

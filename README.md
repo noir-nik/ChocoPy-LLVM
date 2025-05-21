@@ -31,7 +31,7 @@ It is recommended to use clang and libc++
 ### Configuration:
 With Custom LLVM build specify `-D LLVM_DIR=/path/to/llvm` if it was not found by CMake
 ```bash
-cmake . -B build -G Ninja
+cmake . -B build -G Ninja -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_CXX_FLAGS="-stdlib=libc++ -fno-rtti -fno-exceptions" -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
 ```
 
 ### Build:
@@ -47,6 +47,6 @@ cmake --build build
 ### Running tests:
 ```bash
 cd Test
-python run_test.py ./Parser/Stage_A
-python run_test.py ./Parser/Stage_B
+python run_test.py ./Parser/Stage_A -e ../build/bin/chocopy-llvm
+python run_test.py ./Parser/Stage_B -e ../build/bin/chocopy-llvm
 ```
