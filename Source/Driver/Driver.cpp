@@ -94,6 +94,7 @@ int main(int Argc, char *Argv[]) {
 
     if (DumpASTOpt) {
       P->dump(ASTCtx);
+      std::printf("\n");
     }
 
     if (RunSemaOpt || EmitLLVMOpt)
