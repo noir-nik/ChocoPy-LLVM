@@ -102,10 +102,13 @@ public:
     }
     return true;
   }
-
+  
   bool traverseReturnStmt(ReturnStmt *R) {
-    /// @todo: Here should be your code
-    llvm::report_fatal_error("Return is not supported! Add support...");
+    Base::traverseExpr(R->getValue());
+    if (Actions.getCurScope() == Actions.GlobalScope) {
+      Diags.emitError(R->getLocation().Start, diag::err_bad_return_top);
+      return false;
+    }
     return true;
   }
 
@@ -234,7 +237,7 @@ void Sema::initializeGlobalScope() {
 
 void Sema::handleDeclaration(Declaration *D) {
   /// @todo: Here should be your code
-
+	
   if (CurScope->isDeclInScope(D))
     return;
   CurScope->addDecl(D);
@@ -311,6 +314,8 @@ bool Sema::checkReturnStmt(ReturnStmt *S) {
 
 bool Sema::checkReturnMissing(FuncDef *F) {
   /// @todo: Here should be your code
+
+//   Diags.emitError(F->getLocation().Start, diag::err_missing_return);
   return true;
 }
 

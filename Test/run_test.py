@@ -23,7 +23,7 @@ def dump_dir(dir: str, input_file: str, expected: str, actual: str):
         f.write(actual)
 
 def on_ast(file: str, args)-> bool:
-    cmd = [args.executable, file, "--ast-dump"] + args.flags
+    cmd = [args.executable, file, "--ast-dump"] + [f.strip() for f in args.flags]
     try:
         result = subprocess.run(cmd,
                                 stdout=subprocess.PIPE,
@@ -84,7 +84,7 @@ def on_ast(file: str, args)-> bool:
     return is_success
 
 def on_err(file: str, args, flags: str = "")-> bool:
-    cmd = [args.executable, file, flags] + args.flags
+    cmd = [args.executable, file, flags] + [f.strip() for f in args.flags]
     if (args.verbose > 1):
         print(f"Command: {' '.join(cmd)}")
     try:
@@ -124,26 +124,31 @@ def on_err(file: str, args, flags: str = "")-> bool:
 
         current_output_line = next(output_line_gen, None)
 
-        check_stripped = line_to_check.strip()
-        while current_output_line is not None and check_stripped != current_output_line.strip():
+        line_to_check_strip = line_to_check.strip()
+        # print("line_to_check_strip:", line_to_check_strip)
+        # print(current_output_line)
+
+        while current_output_line is not None and line_to_check_strip != current_output_line.strip():
             if is_strictly_next:
                 is_success = False
                 if (args.verbose > 1):
                     print(f"Error in {file}.err:{i}")
-                    print(f"Expected: {line_to_check.strip()}")
+                    print(f"Expected: {line_to_check_strip}")
                     print(f"Got: {current_output_line}")
                 break
             current_output_line = next(output_line_gen, None)
         if current_output_line is None:
             if (args.verbose > 1):
-                print(f"Error: Expected line not found: {line_to_check.strip()}")
+                print(f"\033[91mError: Expected line not found:\n{line_to_check_strip}\033[0m")
+                # print(line_to_check_strip)
             is_success =  False
             break
 
         if not is_success:
             continue
+
     if (not is_success and args.verbose > 1):
-        print(f"Command: {' '.join(cmd)}")
+        # print(f"Command: {' '.join(cmd)}")
         print(f"Output:")
         print(decoded_stderr)
 

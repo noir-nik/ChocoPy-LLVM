@@ -131,12 +131,6 @@ int main(int Argc, char *Argv[]) {
   Actions.initialize();
 
   if (Program *P = TheParser.parse()) {
-    auto ErrNum = DiagsEngine.getNumErrors();
-    if (ErrNum > 0) {
-      std::fprintf(stderr, "%u error%s generated!\n", ErrNum,
-                   ErrNum == 1 ? "" : "s");
-    }
-
     if (DumpASTOpt) {
       P->dump(ASTCtx);
       std::printf("\n");
@@ -154,6 +148,15 @@ int main(int Argc, char *Argv[]) {
     // // llvm::raw_fd_ostream OS("a.out", EC, llvm::sys::fs::OF_Text);
     // // OS << *M;
     // M->print(llvm::outs(), nullptr);
+  }
+//   if (int ErrCnt = DiagsEngine.getNumErrors())
+//     llvm::outs() << ErrCnt << " error" << (ErrCnt == 1 ? "" : "s")
+//                  << " generated!" << "\n";
+
+  auto ErrNum = DiagsEngine.getNumErrors();
+  if (ErrNum > 0) {
+    std::fprintf(stderr, "%u error%s generated!\n", ErrNum,
+                 ErrNum == 1 ? "" : "s");
   }
 
   return 0;
