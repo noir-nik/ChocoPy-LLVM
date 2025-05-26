@@ -49,4 +49,6 @@ cmake --build build
 cd Test
 python run_test.py ./Parser/Stage_A -e ../build/bin/chocopy-llvm
 python run_test.py ./Parser/Stage_B -e ../build/bin/chocopy-llvm
+python run_test.py ./Parser/Bad -e ../build/bin/chocopy-llvm
+python run_test.py ./Sema/Bad -e ../build/bin/chocopy-llvm.exe -f " --run-sema"
 ```

@@ -34,6 +34,10 @@ DIAG(err_redefine_attr, Error, "Cannot re-define attribute: {0}")
 
 DIAG(err_method_override, Error, "Method overridden with different type signature: {0}")
 
+DIAG(err_method_not_exist, Error, "There is no method named {0} in class {1}")
+
+DIAG(err_attr_not_exist, Error, "There is no attribute named `{0}` in class `{1}`")
+
 DIAG(err_first_method_param, Error, "First parameter of the following method must be of the enclosing class: {0}")
 
 DIAG(err_bad_local_assign, Error, "Cannot assign to variable that is not explicitly declared in this scope: {0}")
@@ -50,6 +54,16 @@ DIAG(err_tc_assign, Error, "Expected type `{0}`; got type `{1}`")
 
 DIAG(err_tc_binary, Error, "Cannot apply operator `{0}` on types `{1}` and `{2}`")
 
+DIAG(err_tc_unary, Error, "Cannot apply operator `{0}` on type `{1}`")
+
 DIAG(err_invalid_assignment_target, Error, "Invalid assignment target: {0}")
+
+DIAG(err_call, Error, "Not a function or class: {0}")
+
+DIAG(err_num_arguments,  Error, "Expected {0} arguments; got {1}")
+
+DIAG(err_index_not_int, Error, "Index is of non-integer type `{0}`")
+
+DIAG(err_cannot_index, Error, "Cannot index into type `{0}`")
 
 #undef DIAG

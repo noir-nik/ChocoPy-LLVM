@@ -28,6 +28,8 @@ private:
   void setCurScope(std::shared_ptr<Scope> S) { CurScope = std::move(S); }
 
   void handleDeclaration(Declaration *D);
+  void handleClassDef(ClassDef *C);
+  void handleFuncDef(FuncDef *F);
 
   void actOnPopScope(Scope *S);
 
@@ -35,13 +37,17 @@ private:
   bool checkGlobalDecl(GlobalDecl *GD);
   bool checkSuperClass(ClassDef *D);
   bool checkClassAttrs(ClassDef *D);
-  bool checkMethodOverride(FuncDef *OM, FuncDef *M);
+  bool checkMethodOverride(FuncDef *Ovr, FuncDef *Method);
   bool checkClassDef(ClassDef *D);
-  bool checkFirstMethodParam(ClassDef *CD, FuncDef *FD);
+  bool checkFirstMethodParam(ClassDef *ClsDef, FuncDef *FuncDef);
   bool checkAssignTarget(Expr *E);
   bool checkReturnStmt(ReturnStmt *S);
   bool checkReturnMissing(FuncDef *F);
   bool checkTypeAnnotation(ClassType *T);
+
+  void checkClassShadow(Declaration *D);
+  bool checkClassDeclaration(ClassDef *C, Declaration *D);
+  bool checkReturnMissing(ArrayRef<Stmt *> SL);
 
   void actOnVarDef(VarDef *V);
   void actOnBinaryExpr(BinaryExpr *B);
@@ -53,8 +59,24 @@ private:
 
   bool isSameType(TypeAnnotation *TyA, TypeAnnotation *TyB);
 
+  Declaration *lookupClass(Scope *S, ClassType *CT);
   Declaration *lookupName(Scope *S, SymbolInfo *SI);
   Declaration *lookupDecl(DeclRef *DR);
+
+  bool checkCallExpr(CallExpr *C);
+  bool checkMethodCallExpr(MethodCallExpr *MC);
+  bool checkParams(SMRange point, ArrayRef<ParamDecl *> IndecLn,
+                   ArrayRef<Expr *> ArgLn);
+  bool checkAssignment(Expr *T, Expr *E);
+  // bool checkAssignTarget(Expr *E);
+  bool checkIndexExpr(IndexExpr *E);
+  bool checkInitDeclaration(ClassDef *C, FuncDef *FD);
+  bool checkMemberExpr(MemberExpr *ME, bool IsMethod);
+  Declaration *findDeclaration(ClassDef *C, DeclRef *M);
+  FuncDef *getInitFunc(ClassDef *C);
+  bool checkUnaryExpr(UnaryExpr *UE);
+  bool checkExprList(ListExpr *LE);
+  bool checkReturnStmt(ReturnStmt *S, ValueType *ERTy);
 
 private:
   using Nonlocals = SmallVector<NonLocalDecl *, 4>;
