@@ -24,7 +24,7 @@ def dump_dir(dir: str, input_file: str, expected: str, actual: str):
 
 def on_ast(file: str, args)-> bool:
     try:
-        result = subprocess.run([args.executable, file, "--ast-dump"],
+        result = subprocess.run([args.executable, file, "--ast-dump" + args.flags],
                                 stdout=subprocess.PIPE,
                                 stderr=subprocess.PIPE,
                                 check=True)
@@ -79,18 +79,15 @@ def on_ast(file: str, args)-> bool:
         if not is_success:
             dump_dir(args.dump_dir, file, ast_file_content, decoded)
 
-    if is_success:
-        if (args.verbose > 0):
-            print(f"Pass: {file}")
-    else:
-        if (args.verbose > 0):
-            print(f"Fail: {file}")
             # dump()
     return is_success
 
 def on_err(file: str, args, flags: str = "")-> bool:
+    cmd = [args.executable, file, flags] + args.flags
+    if (args.verbose > 1):
+        print(f"Command: {' '.join(cmd)}")
     try:
-        result = subprocess.run([args.executable, file, flags],
+        result = subprocess.run(cmd,
                                 stdout=subprocess.PIPE,
                                 stderr=subprocess.PIPE,
                                 check=True)
@@ -104,29 +101,53 @@ def on_err(file: str, args, flags: str = "")-> bool:
         exit(0)
     with open(file + ".err") as f:
         lines_expected = f.readlines()
-    lines_expected = [line for line in lines_expected if line.startswith("CHECK:")]
+    lines_test = [line for line in lines_expected]
     lines_actual = decoded_stderr.splitlines(keepends=True)
 
-    is_success = True
-    for i, (expected_line, actual_line) in enumerate(zip(lines_expected, lines_actual)):
-        if not actual_line.startswith(expected_line[6:]):
-            is_success = False
-            if (args.verbose > 1):
-                print(f"Line {i} does not match for {file}")
-                err_print_range = 5
-                start = max(i - err_print_range, 0)
-                end = i + err_print_range
-                print("Expected:")
-                get_arrow = lambda x: "->" if x == i else "  "
-                for j in range(start, min(end, len(lines_expected))):
-                    print(f"{get_arrow(j):<2}{j:>4}", lines_expected[j], end="")
-                print("Got:")
-                for j in range(start, min(end, len(lines_actual))):
-                    print(f"{get_arrow(j):<2}{j:>4}", lines_actual[j], end="")
-                print()
-            break
-    return False
+    def get_next_output_line():
+        for line in lines_actual:
+                yield line
 
+    output_line_gen = get_next_output_line()
+
+    is_success = True
+    for i, line in enumerate(lines_expected, start=1): 
+        if line.startswith("CHECK-NEXT:"):
+            line_to_check = line[len("CHECK-NEXT:"):]
+            is_strictly_next = True
+        elif line.startswith("CHECK:"):
+            line_to_check = line[len("CHECK:"):]
+            is_strictly_next = False
+        else:
+            continue
+
+        current_output_line = next(output_line_gen, None)
+
+        check_stripped = line_to_check.strip()
+        while current_output_line is not None and check_stripped != current_output_line.strip():
+            if is_strictly_next:
+                is_success = False
+                if (args.verbose > 1):
+                    print(f"Error in {file}.err:{i}")
+                    print(f"Expected: {line_to_check.strip()}")
+                    print(f"Got: {current_output_line}")
+                break
+            current_output_line = next(output_line_gen, None)
+        if current_output_line is None:
+            if (args.verbose > 1):
+                print(f"Error: Expected line not found: {line_to_check.strip()}")
+            is_success =  False
+            break
+
+        if not is_success:
+            continue
+    if (not is_success and args.verbose > 1):
+        print(f"Command: {' '.join(cmd)}")
+        print(f"Output:")
+        print(decoded_stderr)
+
+    return is_success
+ 
 
 def main():
     parser = argparse.ArgumentParser(description="Run ChocoPy tests.")
@@ -134,14 +155,18 @@ def main():
     parser.add_argument('--dump', action='store_true', help='Dump the AST')
     parser.add_argument('--dump_dir', help='Dump expected and actual AST of failed tests to files in the given directory')
     parser.add_argument('--dump_only', action='store_true', help='Only dump the AST')
-    parser.add_argument('--verbose', type=int, help='Verbose output', default=0, nargs='?')
+    parser.add_argument('-f', '--flags', dest='flags', nargs='+', help='Specify additional flags to pass to the ChocoPy executable', default=[])
+    parser.add_argument('-v', '--verbose', action='store_const',  const=1, default=0, help='Increase verbosity')
+    parser.add_argument('-vv', '--very-verbose', action='store_const', const=2, default=0, help='Increase verbosity even more')
+
 
     args, TEST_FILES = parser.parse_known_args()
 
-    executable = args.executable
+    verbosity = args.verbose if args.verbose > 0 else args.very_verbose
+    args.verbose = verbosity
 
-    if not os.path.isfile((executable)):
-        print(f"ChocoPy executable {executable} not found, specify correct path to chocopy-llvm")
+    if not os.path.isfile((args.executable)):
+        print(f"ChocoPy executable {args.executable} not found, specify correct path to chocopy-llvm")
         parser.print_usage()
         sys.exit(1)
 
@@ -175,13 +200,20 @@ def main():
     if not args.dump_only:
         print(f"Running {test_count} test" + ("s" if test_count > 1 else ""))
 
+
     for file in all_files:
         if os.path.isfile(ast_file):
-            if on_ast(file, args):
-                passed += 1
+            is_success = on_ast(file, args)
         else:
-            if on_err(file, args):
-                passed += 1
+            is_success = on_err(file, args)
+            
+        if is_success:
+            passed += 1
+            if (args.verbose > 0):
+                print(f"Pass: {file}")
+        else:
+            if (args.verbose > 0):
+                print(f"Fail: {file}")
  
        
 
