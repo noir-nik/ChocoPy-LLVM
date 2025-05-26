@@ -23,8 +23,9 @@ def dump_dir(dir: str, input_file: str, expected: str, actual: str):
         f.write(actual)
 
 def on_ast(file: str, args)-> bool:
+    cmd = [args.executable, file, "--ast-dump"] + args.flags
     try:
-        result = subprocess.run([args.executable, file, "--ast-dump" + args.flags],
+        result = subprocess.run(cmd,
                                 stdout=subprocess.PIPE,
                                 stderr=subprocess.PIPE,
                                 check=True)
@@ -202,6 +203,8 @@ def main():
 
 
     for file in all_files:
+        ast_file = file + ".ast"
+        err_file = file + ".err"
         if os.path.isfile(ast_file):
             is_success = on_ast(file, args)
         else:

@@ -1045,6 +1045,7 @@ Literal *Parser::parseLiteral() {
   } else if (Tok.isOneOf(tok::idstring, tok::string_literal)) {
     StringRef Str = Tok.getLiteralData();
     consumeToken();
+    // Loc.End = SMLoc::getFromPointer(Loc.End.getPointer() - 1);
     return Context.createStringLiteral(Loc, Str);
   }
 
