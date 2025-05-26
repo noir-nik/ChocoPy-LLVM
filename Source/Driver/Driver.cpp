@@ -33,6 +33,26 @@ void printUsage() {
   std::printf("  --cfg-dump\n");
 }
 
+class FileBuffer : public llvm::MemoryBuffer {
+public:
+  using Base = llvm::MemoryBuffer;
+  FileBuffer(StringRef Content, StringRef Identifier) : Identifier(Identifier) {
+    Base::init(Content.data(), Content.data() + Content.size(), false);
+  }
+
+  virtual auto getBufferKind() const
+      -> llvm::MemoryBuffer::BufferKind override {
+    return MemoryBuffer_Malloc;
+  }
+
+  StringRef getBufferIdentifier() const override { return Identifier; }
+
+  ~FileBuffer() {}
+
+private:
+  std::string Identifier;
+};
+
 int main(int Argc, char *Argv[]) {
   constexpr char const *DemoPath = "./Test/Demo/demo.py";
 
@@ -72,7 +92,7 @@ int main(int Argc, char *Argv[]) {
     std::printf("No input file\n");
     return -1;
   }
-  char const *FilePath = Argv[1];
+  std::string_view FilePath = Argv[1];
 
   std::optional<std::string> Content = Utils::ReadFile(FilePath);
   if (!Content) {
@@ -82,7 +102,10 @@ int main(int Argc, char *Argv[]) {
 
   // std::printf("%s\n", content->c_str());
 
-  auto Buffer = std::make_unique<FileBuffer>(*Content);
+  //   std::max({Identifier.find_last_of("/\\"), Identifier.find_last_of(":")),
+  //   Identifier.end()
+  auto FileName = std::filesystem::path(FilePath).filename().string();
+  auto Buffer = std::make_unique<FileBuffer>(*Content, FileName);
 
   SourceMgr SrcMgr;
   SrcMgr.AddNewSourceBuffer(std::move(Buffer), llvm::SMLoc());

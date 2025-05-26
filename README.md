@@ -7,9 +7,9 @@ Compile a file:
 chocopy-llvm input.py
 ```
 
-To print the AST add the `-ast-dump` flag:
+To print the AST add the `--ast-dump` flag:
 ```bash
-chocopy-llvm input.py -ast-dump
+chocopy-llvm input.py --ast-dump
 ```
 
 Compile a demo file
