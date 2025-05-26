@@ -24,6 +24,15 @@ void dumpTokens(Lexer &TheLexer) {
   }
 }
 
+void printUsage() {
+  std::printf("Usage: chocopy [options] <input_file>\n");
+  std::printf("Options:\n");
+  std::printf("  -ast-dump\n");
+  std::printf("  -run-sema\n");
+  std::printf("  -emit-llvm\n");
+  std::printf("  -cfg-dump\n");
+}
+
 int main(int Argc, char *Argv[]) {
   constexpr char const *DemoPath = "./Test/Demo/demo.py";
 
@@ -33,7 +42,16 @@ int main(int Argc, char *Argv[]) {
   bool EmitLLVMOpt = false;
   bool CfgDumpOpt = false;
 
-  for (std::string_view Arg : std::span(Argv + 1, Argc - 1)) {
+  auto ArgsRange = std::span(Argv + 1, Argc - 1);
+
+  for (std::string_view Arg : ArgsRange) {
+    if (Arg == "-h" || Arg == "--help") {
+      printUsage();
+      return 0;
+    }
+  }
+
+  for (std::string_view Arg : ArgsRange) {
     if (Arg == "-t") {
       DumpTokensOpt = true;
     } else if (Arg == "-ast-dump") {
@@ -44,6 +62,9 @@ int main(int Argc, char *Argv[]) {
       EmitLLVMOpt = true;
     } else if (Arg == "-cfg-dump") {
       CfgDumpOpt = true;
+    } else if (Arg.starts_with("-")) {
+      std::printf("Unknown argument: %s\n", Arg.data());
+      return -1;
     }
   }
 
