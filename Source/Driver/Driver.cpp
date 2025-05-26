@@ -71,7 +71,8 @@ int main(int Argc, char *Argv[]) {
     }
   }
 
-  for (std::string_view Arg : ArgsRange) {
+  for (auto i = 1; i < Argc; ++i) {
+    StringRef Arg = Argv[i];
     if (Arg == "-t") {
       DumpTokensOpt = true;
     } else if (Arg == "--ast-dump") {
