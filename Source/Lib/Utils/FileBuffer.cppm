@@ -1,5 +1,7 @@
 module;
-#include "llvm/Support/MemoryBuffer.h"
+
+import LLVM;
+import std;
 
 export module FileBuffer;
 

@@ -6,7 +6,7 @@ add_executable(${DRIVER_NAME}
 )
 
 target_link_libraries(${DRIVER_NAME} PRIVATE
-	Utils
+	chocopy-llvm-utils
     chocopy-llvm-AST
     chocopy-llvm-analysis
     chocopy-llvm-codegen
