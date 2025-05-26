@@ -81,8 +81,44 @@ void InFlightDiagnostic::emit() {
 }
 
 void TextDiagnosticPrinter::handleDiagnostic(const Diagnostic &Diag) {
-  SrcMgr.PrintMessage(Diag.getLocation(), Diag.getKind(), Diag.getMessage());
+  //   auto Num = SrcMgr.getNumBuffers();
+  //   std::printf("%d\n", Num);
+
+ /*  
+  auto Buf = SrcMgr.getMemoryBuffer(1);
+  auto StartPtr = Buf->getBufferStart();
+  auto LocPtr = Diag.getLocation().getPointer();
+  auto NumLines = 1;
+
+  // Calc lines before loc
+  char const *LineStart = StartPtr;
+  while (StartPtr < LocPtr) {
+    if (*StartPtr == '\n') {
+      LineStart = StartPtr + 1;
+      NumLines++;
+    }
+    StartPtr++;
+  }
+
+  // Calc pos in line
+  int PosInLine = LocPtr - LineStart + 1;
+  //   std::printf("%d:%d: %s\n", NumLines, PosInLine,
+  //   Diag.getMessage().c_str());
+
+  auto FileName = Buf->getBufferIdentifier();
   //   std::printf("%s\n", Diag.getMessage().c_str());
+  std::printf("%s:%d:%d: error: %s\n", FileName.data(), NumLines, PosInLine,
+              Diag.getMessage().c_str());
+
+  //   std::printf("%s: %s\n", FileName.data(), Diag.getMessage().c_str());
+  // //   std::printf("P:%sn", Diag.getLocation().getPointer());
+
+  SrcMgr.FindBufferContainingLoc(Diag.getLocation());
+ */
+
+	// Crash with new llvm and ubuntu
+  SrcMgr.PrintMessage(Diag.getLocation(), Diag.getKind(), Diag.getMessage()); 
+
 }
 
 } // namespace chocopy
