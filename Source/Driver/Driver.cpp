@@ -27,10 +27,10 @@ void dumpTokens(Lexer &TheLexer) {
 void printUsage() {
   std::printf("Usage: chocopy [options] <input_file>\n");
   std::printf("Options:\n");
-  std::printf("  -ast-dump\n");
-  std::printf("  -run-sema\n");
-  std::printf("  -emit-llvm\n");
-  std::printf("  -cfg-dump\n");
+  std::printf("  --ast-dump\n");
+  std::printf("  --run-sema\n");
+  std::printf("  --emit-llvm\n");
+  std::printf("  --cfg-dump\n");
 }
 
 int main(int Argc, char *Argv[]) {
@@ -54,13 +54,13 @@ int main(int Argc, char *Argv[]) {
   for (std::string_view Arg : ArgsRange) {
     if (Arg == "-t") {
       DumpTokensOpt = true;
-    } else if (Arg == "-ast-dump") {
+    } else if (Arg == "--ast-dump") {
       DumpASTOpt = true;
-    } else if (Arg == "-run-sema") {
+    } else if (Arg == "--run-sema") {
       RunSemaOpt = true;
-    } else if (Arg == "-emit-llvm") {
+    } else if (Arg == "--emit-llvm") {
       EmitLLVMOpt = true;
-    } else if (Arg == "-cfg-dump") {
+    } else if (Arg == "--cfg-dump") {
       CfgDumpOpt = true;
     } else if (Arg.starts_with("-")) {
       std::printf("Unknown argument: %s\n", Arg.data());
