@@ -334,8 +334,7 @@ bool Parser::parseFuncBody(DeclList &Declarations, StmtList &Statements) {
       Declarations.push_back(G);
     } else if (NonLocalDecl *N = parseNonlocalDecl()) {
       Declarations.push_back(N);
-    }
-    if (isVarDef(Tok)) {
+    } else if (isVarDef(Tok)) {
       if (VarDef *V = parseVarDef()) {
         Declarations.push_back(V);
       }

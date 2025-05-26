@@ -23,7 +23,7 @@ def dump_dir(dir: str, input_file: str, expected: str, actual: str):
         f.write(actual)
 
 def on_ast(file: str, args)-> bool:
-    cmd = [args.executable, file, "--ast-dump"] + [f.strip() for f in args.flags]
+    cmd = [args.executable, file, "-ast-dump"] + [f.strip() for f in args.flags]
     try:
         result = subprocess.run(cmd,
                                 stdout=subprocess.PIPE,
