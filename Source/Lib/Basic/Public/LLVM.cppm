@@ -137,7 +137,7 @@ using llvm::isa_and_present;
 // ADT's.
 using llvm::ArrayRef;
 using llvm::MutableArrayRef;
-using llvm::OwningArrayRef;
+// using llvm::OwningArrayRef;
 using llvm::SaveAndRestore;
 using llvm::SmallString;
 using llvm::SmallVector;

@@ -2,9 +2,19 @@ cmake_minimum_required(VERSION 3.30)
 
 if(CMAKE_VERSION VERSION_LESS "4.0.0") 
 set(CMAKE_EXPERIMENTAL_CXX_IMPORT_STD "0e5b6991-d74f-4b3d-a41c-cf096e0b2508")
-else()
+elseif(CMAKE_VERSION VERSION_LESS "4.3.0") 
 set(CMAKE_EXPERIMENTAL_CXX_IMPORT_STD "a9e1cf81-9932-4810-974b-6eccaf14e457")
+else()
+set(CMAKE_EXPERIMENTAL_CXX_IMPORT_STD "451f2fe2-a8a2-47c3-bc32-94786d8fc91b")
 endif()
+
+if(CMAKE_VERSION VERSION_GREATER_EQUAL "4.4.0") 
+set(CMAKE_EXPERIMENTAL_CXX_IMPORT_STD "f35a9ac6-8463-4d38-8eec-5d6008153e7d")
+endif()
+
+
+message(STATUS "CMAKE_EXPERIMENTAL_CXX ${CMAKE_EXPERIMENTAL_CXX_IMPORT_STD}")
+
 
 project(chocopy-llvm LANGUAGES C CXX)
 
@@ -113,3 +123,5 @@ add_subdirectory(Test)
 endif()
 
 # cmake . -B build -G Ninja -DCMAKE_BUILD_TYPE=Debug -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_CXX_FLAGS="-stdlib=libc++ -fno-rtti -fno-exceptions" -Wno-dev -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+
+# cmake . -B build -G Ninja -DCMAKE_BUILD_TYPE=Debug -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_CXX_FLAGS="-stdlib=libc++ -fno-rtti -fno-exceptions" -Wno-dev -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DLLVM_LIBRARY_DIR=/usr/lib -DCMAKE_COLOR_DIAGNOSTICS=ON

@@ -130,8 +130,8 @@ public:
   }
 
   friend auto operator<<(InFlightDiagnostic &&D, const Token &Tok) -> auto && {
-    // return std::forward<InFlightDiagnostic>(D) << StringRef(Tok);
-    return std::forward<InFlightDiagnostic>(D) << std::string(Tok); // Invoke formatting
+    return std::forward<InFlightDiagnostic>(D) << StringRef(Tok);
+    // return std::forward<InFlightDiagnostic>(D) << std::string(Tok); // Invoke formatting
   }
 
   friend raw_ostream &operator<<(raw_ostream &Stream, const Token &Tok) {

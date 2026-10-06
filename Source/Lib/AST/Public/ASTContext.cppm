@@ -131,13 +131,9 @@ private:
         return !this->operator==(That);
       }
     };
-
-    static inline FuncType *getEmptyKey() {
-      return llvm::DenseMapInfo<FuncType *>::getEmptyKey();
-    }
-
-    static inline FuncType *getTombstoneKey() {
-      return llvm::DenseMapInfo<FuncType *>::getTombstoneKey();
+ 
+    static bool isEqual(const KeyTy &LHS, const FuncType *RHS) {
+      return LHS == KeyTy(RHS);
     }
 
     static unsigned getHashValue(const KeyTy &Key) {
@@ -148,13 +144,9 @@ private:
 
     static unsigned getHashValue(const FuncType *FT) {
       return getHashValue(KeyTy(FT));
+      // return llvm::DenseMapInfo<FuncType *>::getHashValue(FT);
     }
 
-    static bool isEqual(const KeyTy &LHS, const FuncType *RHS) {
-      if (RHS == getEmptyKey() || RHS == getTombstoneKey())
-        return false;
-      return LHS == KeyTy(RHS);
-    }
 
     static bool isEqual(const FuncType *LHS, const FuncType *RHS) {
       return LHS == RHS;
